@@ -8,6 +8,206 @@
     @vite('resources/css/app.css')
 </head>
 <body>
+    <nav class="flex flex-wrap items-center justify-between p-3 bg-[#e8e8e5]">
+        <div class="text-xl">Bappa Flour mill</div>
+        <div class="flex md:hidden">
+            <button id="hamburger">
+              <img class="toggle block" src="https://img.icons8.com/fluent-systems-regular/2x/menu-squared-2.png" width="40" height="40" />
+              <img class="toggle hidden" src="https://img.icons8.com/fluent-systems-regular/2x/close-window.png" width="40" height="40" />
+            </button>
+        </div>
+        <div class=" toggle hidden w-full md:w-auto md:flex text-right text-bold mt-5 md:mt-0 md:border-none">
+            <a href="#home" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Home
+            </a>
+            <a href="#services" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Services
+            </a>
+            <a href="#aboutus" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">About us
+            </a>
+            <a href="#gallery" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Gallery
+            </a>
+            <a href="#contactUs" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Visit Us
+            </a>
+        </div>
+    
+        <div class="toggle w-full text-end hidden md:flex md:w-auto px-2 py-2 md:rounded">
+            <a href="tel:+123">
+                <div class="flex justify-end">
+                    <div class="flex items-center h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-medium p-2">
+                        <!-- Heroicon name: phone -->
+                        {{-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                        </svg> --}}
+                        Log Out
+                    </div>
+                </div>
+            </a>
+        </div>
+    
+    </nav>
+
+    <div id="fields" class="container mx-auto py-12">
+        <h2 class="text-3xl font-bold text-center mb-12">Lapangan Tersedia</h2>
+    
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @if(isset($fields) && $fields->isNotEmpty())
+                @foreach($fields as $field)
+                    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                        <img src="{{ asset('storage/' . $field->photo) }}" alt="{{ $field->name }}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold">{{ $field->name }}</h3>
+                            <p class="text-gray-600 mb-4">{{ $field->location }}</p>
+                            <p class="text-gray-600">{{ $field->description }}</p>
+                            <p class="text-blue-600 font-bold mt-4">Rp {{ number_format($field->price_per_hour, 0, ',', '.') }} / jam</p>
+                            {{-- <a href="{{ route('booking.create', ['field_id' => $field->id]) }}" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">Reservasi Sekarang</a> --}}
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p>Tidak ada lapangan yang tersedia.</p>
+            @endif
+        </div>
+    </div>
+    
+    
+
+    {{-- <div id="fields" class="container mx-auto py-12">
+        <h2 class="text-3xl font-bold text-center mb-12">Lapangan Tersedia</h2>
+    
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach($fields as $field)
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <img src="{{ asset('storage/' . $field->photo) }}" alt="{{ $field->name }}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold">{{ $field->name }}</h3>
+                        <p class="text-gray-600 mb-4">{{ $field->location }}</p>
+                        <p class="text-gray-600">{{ $field->description }}</p>
+                        <p class="text-blue-600 font-bold mt-4">Rp {{ number_format($field->price_per_hour, 0, ',', '.') }} / jam</p>
+                        <a href="{{ route('booking.create', ['field_id' => $field->id]) }}" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">Reservasi Sekarang</a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div> --}}
+    
+
+    <div class="bg-cover bg-center h-screen" style="background-image: url('/images/futsal-bg.jpg');">
+        <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
+            <div class="text-center text-white">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">Reservasi Lapangan Futsal</h1>
+                <p class="text-lg md:text-xl mb-6">Pesan lapangan futsal dengan mudah, cepat, dan aman.</p>
+                <a href="#fields" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full text-lg">Lihat Lapangan</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daftar Lapangan -->
+    {{-- <div id="fields" class="container mx-auto py-12">
+        <h2 class="text-3xl font-bold text-center mb-12">Lapangan Tersedia</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach($fields as $field)
+                <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <img src="{{ asset('storage/' . $field->photo) }}" alt="{{ $field->name }}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold">{{ $field->name }}</h3>
+                        <p class="text-gray-600 mb-4">{{ $field->location }}</p>
+                        <p class="text-gray-600">{{ $field->description }}</p>
+                        <p class="text-blue-600 font-bold mt-4">Rp {{ number_format($field->price_per_hour, 0, ',', '.') }} / jam</p>
+                        <a href="{{ route('booking.create', ['field_id' => $field->id]) }}" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">Reservasi Sekarang</a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div> --}}
+
+    <!-- Informasi Layanan -->
+    <div class="bg-gray-100 py-12">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-6">Kenapa Pilih Kami?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 bg-white shadow-lg rounded-lg">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-xl font-bold mb-2">Mudah & Cepat</h3>
+                    <p class="text-gray-600">Proses reservasi lapangan futsal kami mudah dan cepat, hanya dengan beberapa klik.</p>
+                </div>
+                <div class="p-6 bg-white shadow-lg rounded-lg">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-xl font-bold mb-2">Jaminan Lapangan</h3>
+                    <p class="text-gray-600">Kami menjamin lapangan yang dipesan tersedia sesuai dengan waktu yang dipilih.</p>
+                </div>
+                <div class="p-6 bg-white shadow-lg rounded-lg">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-xl font-bold mb-2">Pembayaran Aman</h3>
+                    <p class="text-gray-600">Kami menyediakan metode pembayaran yang aman dan dapat dipercaya.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visit us section -->
+<section class="bg-gray-100">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:py-20 lg:px-8">
+        <div class="max-w-2xl lg:max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900" id="contactUs">Visit Our Location</h2>
+            <p class="mt-3 text-lg text-gray-500">Let us serve you the best</p>
+        </div>
+        <div class="mt-8 lg:mt-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <div class="max-w-full mx-auto rounded-lg overflow-hidden">
+                        <div class="border-t border-gray-200 px-6 py-4">
+                            <h3 class="text-lg font-bold text-gray-900">Contact</h3>
+                            <p class="mt-1 font-bold text-gray-600"><a href="tel:+123">Phone: +91
+                                    123456789</a></p>
+                            <a class="flex m-1" href="tel:+919823331842">
+                                <div class="flex-shrink-0">
+                                    <div
+                                        class="flex items-center justify-between h-10 w-30 rounded-md bg-indigo-500 text-white p-2">
+                                        <!-- Heroicon name: phone -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                                        </svg>
+                                        Call now
+                                    </div>
+                                </div>
+
+                            </a>
+                        </div>
+                        <div class="px-6 py-4">
+                            <h3 class="text-lg font-medium text-gray-900">Our Address</h3>
+                            <p class="mt-1 text-gray-600">Sale galli, 60 foot road, Latur</p>
+                        </div>
+                        <div class="border-t border-gray-200 px-6 py-4">
+                            <h3 class="text-lg font-medium text-gray-900">Hours</h3>
+                            <p class="mt-1 text-gray-600">Monday - Sunday : 2pm - 9pm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-lg overflow-hidden order-none sm:order-first">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.7850672491236!2d76.58802159999999!3d18.402630699999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcf83ca88e84341%3A0x841e547bf3ad066d!2zQmFwcGEgZmxvdXIgbWlsbCB8IOCkrOCkquCljeCkquCkviDgpKrgpYDgpKAg4KSX4KS_4KSw4KSj4KWALCDgpK7gpL_gpLDgpJrgpYAg4KSV4KS-4KSC4KSh4KSqIOCkhuCko-CkvyDgpLbgpYfgpLXgpL7gpK_gpL4!5e0!3m2!1sen!2sin!4v1713433597892!5m2!1sen!2sin"
+                        class="w-full" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- footer -->
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Sistem Reservasi Lapangan Futsal. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+    
     <!-- nav bar section -->
 <nav class="flex flex-wrap items-center justify-between p-3 bg-[#e8e8e5]">
     <div class="text-xl">Bappa Flour mill</div>
