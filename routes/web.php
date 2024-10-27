@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FieldController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
@@ -33,24 +34,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-
-
-
-
-
 // Routes for bookings, only accessible by authenticated users
 Route::middleware(['auth'])->group(function () {
     Route::get('/booking/create', [BookingController::class, 'create'])->name('bookings.create');
     Route::post('/booking/store', [BookingController::class, 'store'])->name('bookings.store');
     Route::get('/index', [FieldController::class, 'indexForUser'])->name('index');
-    
 });
 
 // Admin Routes with auth and admin middleware
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::resource('fields', FieldController::class);
+    Route::resource('schedules', ScheduleController::class);
     Route::resource('bookings', BookingController::class);
     Route::resource('users', UserController::class);
 });
