@@ -21,8 +21,10 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('/index');
 });
+
+Route::get('/index', [FieldController::class, 'indexForUser'])->name('index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

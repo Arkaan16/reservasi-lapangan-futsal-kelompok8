@@ -113,16 +113,12 @@ class FieldController extends Controller
     }
 
     public function indexForUser()
-{
-    $fields = Field::all(); // Mengambil semua data lapangan
-    if ($fields->isEmpty()) {
-        // Jika tidak ada data, bisa mengembalikan pesan
-        return view('index')->with('message', 'Tidak ada lapangan yang tersedia.');
+    {
+        $fields = Field::all(); // Mengambil semua data lapangan
+        if ($fields->isEmpty()) {
+            // Jika tidak ada data, bisa mengembalikan pesan
+            return view('index')->with('message', 'Tidak ada lapangan yang tersedia.');
+        }
+        return view('index', compact('fields')); // Mengembalikan view untuk landing page dengan data lapangan
     }
-    return view('index', compact('fields')); // Mengembalikan view untuk landing page dengan data lapangan
-}
-
-
-
-    
 }

@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="w-full mt-6">
-                    <div class="bg-white overflow-auto mx-auto" style="max-width: 1200px;">
+                    <div class="bg-white overflow-auto mx-auto rounded-lg" style="max-width: 1200px;">
                         <table class="min-w-full bg-white mx-auto text-center">
                             <thead class="bg-gray-800 text-white">
                                 <tr>

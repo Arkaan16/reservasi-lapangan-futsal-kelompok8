@@ -20,21 +20,24 @@
         <!-- Tabel Lapangan -->
         <a href="{{ route('admin.fields.index') }}" 
            class="flex items-center {{ request()->routeIs('admin.fields.index') ? 'active-nav-link' : 'opacity-75 hover:opacity-100' }} py-4 pl-6 nav-item">
-            <i class="fas fa-table mr-3"></i>
+            <i class="fas fa-futbol mr-3"></i>
             Tabel Lapangan
         </a>
 
         <!-- Tabel Jadwal -->
         <a href="{{ route('admin.schedules.index') }}" 
            class="flex items-center {{ request()->routeIs('admin.schedules.index') ? 'active-nav-link' : 'opacity-75 hover:opacity-100' }} py-4 pl-6 nav-item">
-            <i class="fas fa-table mr-3"></i>
+            <i class="fas fa-calendar-alt mr-3"></i>
             Tabel Jadwal
         </a>
 
         <!-- Log Out -->
-        <a href="#" class="absolute w-full upgrade-btn bottom-0 active-nav-link text-white flex items-center justify-center py-4">
-            <i class="fas fa-arrow-circle-up mr-3"></i>
-            Log Out
-        </a>
+        <form method="POST" action="{{ route('logout') }}" class="absolute w-full bottom-0">
+            @csrf
+            <button type="submit" class="upgrade-btn w-full active-nav-link text-white flex items-center justify-center py-4 bg-red-600 hover:bg-red-700">
+                <i class="fas fa-arrow-circle-up mr-3"></i>
+                Log Out
+            </button>
+        </form>        
     </nav>
 </aside>

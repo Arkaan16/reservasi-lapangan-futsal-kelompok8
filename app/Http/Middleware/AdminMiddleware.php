@@ -16,6 +16,6 @@ class AdminMiddleware
         }
 
         // Redirect ke dashboard biasa jika bukan admin
-        return redirect('/dashboard')->with('error', 'Anda tidak memiliki akses sebagai admin.');
+        return redirect('/')->with('error', 'Anda tidak memiliki akses sebagai admin.');
     }
 }
