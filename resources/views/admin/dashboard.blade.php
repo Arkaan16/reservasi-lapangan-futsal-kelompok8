@@ -31,7 +31,7 @@
             <h1 class="text-3xl text-black pb-6">Dashboard Admin</h1>
 
             <!-- Bagian Statistik -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Total Pengguna -->
                 <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-blue-600">
                     <div class="flex items-center">
@@ -57,19 +57,31 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Total Jadwal -->
+                <div class="bg-white p-6 rounded-lg shadow-lg border-t-4 border-yellow-600">
+                    <div class="flex items-center">
+                        <div class="bg-yellow-100 p-4 rounded-full">
+                            <i class="fas fa-calendar-alt text-yellow-600 text-3xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Total Jadwal</h3>
+                            <p class="text-3xl font-bold text-gray-800">{{ $schedules }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
-    
-
-
     <!-- AlpineJS -->
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <!-- Font Awesome -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+        integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
     <!-- ChartJS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+        integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
 </body>
 </html>
 {{-- <!DOCTYPE html>
