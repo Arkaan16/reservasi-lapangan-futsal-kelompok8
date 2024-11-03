@@ -11,7 +11,7 @@
     <nav class="flex flex-wrap items-center justify-between p-3 bg-[#e8e8e5]">
         <div class="flex items-center">
             <img src="/assets/img/logof.png" alt="Logo" class="h-10 mr-3"> <!-- Menambahkan logo -->
-            <div class="text-xl">Reservasi Lapangan</div>
+            <div class="text-xl">Wolf Field</div>
         </div>
         <div class="flex md:hidden">
             <button id="hamburger">
@@ -159,7 +159,7 @@
                             </div>
                             <div class="px-6 py-4">
                                 <h3 class="text-lg font-medium text-gray-900">Alamat Kami</h3>
-                                <p class="mt-1 text-gray-600">Sale galli, 60 foot road, Latur</p>
+                                <p class="mt-1 text-gray-600">Jl. Pelita I, Labuhan Ratu, Kec. Kedaton, Kota Bandar Lampung, Lampung 35132</p>
                             </div>
                             <div class="border-t border-gray-200 px-6 py-4">
                                 <h3 class="text-lg font-medium text-gray-900">Jam Operasional</h3>

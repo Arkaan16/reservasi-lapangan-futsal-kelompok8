@@ -11,10 +11,17 @@
     <div class="min-h-screen flex items-center justify-center">
         <!-- Login Container -->
         <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg space-y-6">
+            @if (session('status'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4" role="alert">
+                    <strong class="font-bold">Success!</strong>
+                    <span class="block sm:inline">{{ session('status') }}</span>
+                </div>
+            @endif
+
             <!-- Logo -->
             <div class="text-center">
                 <img src="/assets/img/logof.png" alt="Futsal Logo" class="w-20 mx-auto mb-4">
-                <h1 class="text-2xl font-bold text-gray-800">Login to Futsal Reservation</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Login to Wolf Field</h1>
             </div>
 
             <!-- Form -->
@@ -24,13 +31,21 @@
                 <!-- Email -->
                 <div class="space-y-2">
                     <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                    <input id="email" name="email" type="email" required autocomplete="email" class="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" class="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <!-- Error message for email -->
+                    @if($errors->has('email'))
+                        <p class="text-red-600 text-sm mt-1">{{ $errors->first('email') }}</p>
+                    @endif
                 </div>
 
                 <!-- Password -->
                 <div class="space-y-2 mt-4">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input id="password" name="password" type="password" required autocomplete="current-password" class="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <!-- Error message for password -->
+                    @if($errors->has('password'))
+                        <p class="text-red-600 text-sm mt-1">{{ $errors->first('password') }}</p>
+                    @endif
                 </div>
 
                 <!-- Remember Me -->

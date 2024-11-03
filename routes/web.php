@@ -20,36 +20,37 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 |
 */
 
-Route::get('/', function () {
-    return view('/index');
-});
+// Rute untuk halaman depan
+Route::get('/', [FieldController::class, 'indexForUser'])->name('index');
 
-Route::get('/index', [FieldController::class, 'indexForUser'])->name('index');
+// Rute untuk halaman dashboard yang hanya bisa diakses oleh pengguna yang terautentikasi
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
+    // Rute untuk profil pengguna
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Rute untuk pemesanan, hanya dapat diakses oleh pengguna yang terautentikasi
+    Route::prefix('bookings')->name('bookings.')->group(function () {
+        Route::get('/create', [BookingController::class, 'create'])->name('create');
+        Route::post('/store', [BookingController::class, 'store'])->name('store');
+    });
 });
 
-// Routes for bookings, only accessible by authenticated users
-Route::middleware(['auth'])->group(function () {
-    Route::get('/booking/create', [BookingController::class, 'create'])->name('bookings.create');
-    Route::post('/booking/store', [BookingController::class, 'store'])->name('bookings.store');
-    Route::get('/index', [FieldController::class, 'indexForUser'])->name('index');
-});
-
-// Admin Routes with auth and admin middleware
+// Rute Admin dengan middleware auth dan admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    
+    // Rute resource untuk fields, schedules, bookings, dan users
     Route::resource('fields', FieldController::class);
     Route::resource('schedules', ScheduleController::class);
     Route::resource('bookings', BookingController::class);
     Route::resource('users', UserController::class);
 });
 
+// Rute untuk autentikasi
 require __DIR__.'/auth.php';

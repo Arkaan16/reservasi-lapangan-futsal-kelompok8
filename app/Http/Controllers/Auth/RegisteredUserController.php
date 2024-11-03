@@ -30,21 +30,28 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Validasi input
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
-    
-        // Membuat pengguna baru
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'user', // Set default role
-        ]);
-    
-        // Redirect ke halaman login setelah registrasi
-        return redirect()->route('login')->with('status', 'Registration successful! Please log in.');
+
+        try {
+            // Membuat pengguna baru
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'user', // Set default role
+            ]);
+
+            // Redirect ke halaman login setelah registrasi
+            return redirect()->route('login')->with('status', 'Registration successful! Please log in.');
+
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan, redirect kembali dengan error message
+            return redirect()->back()->withInput()->with('error', 'Registrasi gagal. Silakan coba lagi.');
+        }
     }
 }
