@@ -31,6 +31,13 @@
             Tabel Jadwal
         </a>
 
+        <!-- Tabel Booking -->
+        <a href="{{ route('admin.bookings.index') }}" 
+           class="flex items-center {{ request()->routeIs('admin.bookings.index') ? 'active-nav-link' : 'opacity-75 hover:opacity-100' }} py-4 pl-6 nav-item">
+            <i class="fas fa-book mr-3"></i>
+            Tabel Booking
+        </a>
+
         <!-- Log Out -->
         <form method="POST" action="{{ route('logout') }}" class="absolute w-full bottom-0">
             @csrf

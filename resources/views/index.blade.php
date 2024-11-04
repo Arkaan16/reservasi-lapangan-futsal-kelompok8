@@ -77,6 +77,7 @@
         </div>
     </section>
 
+    <!-- Lapangan Tersedia -->
     <div class="container mx-auto py-12">
         <h2 class="text-3xl font-extrabold text-center mb-12" id="fields">Lapangan Tersedia</h2>
     
@@ -90,7 +91,16 @@
                             <p class="text-gray-600 mb-4">{{ $field->location }}</p>
                             <p class="text-gray-600">{{ $field->description }}</p>
                             <p class="text-blue-600 font-bold mt-4">Rp {{ number_format($field->price_per_hour, 0, ',', '.') }} / jam</p>
-                            <a href=".." class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">Pesan Sekarang</a>
+                            {{-- {{ route('reservasi.create', $field->id) }} --}}
+                            @auth
+                                <a href="#" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
+                                    Pesan Sekarang
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
+                                    Pesan Sekarang
+                                </a>
+                            @endauth
                         </div>
                     </div>
                 @endforeach
@@ -98,32 +108,32 @@
                 <p>Tidak ada lapangan yang tersedia.</p>
             @endif
         </div>
-
     </div>
+    
 
     <!-- Informasi Layanan -->
-<div class="bg-gray-100 py-16">
-    <div class="container mx-auto text-center">
-        <h2 class="text-3xl font-extrabold mb-8" id="layanan">Kenapa Pilih Kami?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
-                <h3 class="text-2xl font-bold mb-2">Mudah & Cepat</h3>
-                <p class="text-lg text-gray-600">Proses reservasi lapangan futsal kami mudah dan cepat, hanya dengan beberapa klik.</p>
-            </div>
-            <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
-                <h3 class="text-2xl font-bold mb-2">Jaminan Lapangan</h3>
-                <p class="text-lg text-gray-600">Kami menjamin lapangan yang dipesan tersedia sesuai dengan waktu yang dipilih.</p>
-            </div>
-            <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
-                <h3 class="text-2xl font-bold mb-2">Pembayaran Aman</h3>
-                <p class="text-lg text-gray-600">Kami menyediakan metode pembayaran yang aman dan dapat dipercaya.</p>
+    <div class="bg-gray-100 py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-extrabold mb-8" id="layanan">Kenapa Pilih Kami?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-2xl font-bold mb-2">Mudah & Cepat</h3>
+                    <p class="text-lg text-gray-600">Proses reservasi lapangan futsal kami mudah dan cepat, hanya dengan beberapa klik.</p>
+                </div>
+                <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-2xl font-bold mb-2">Jaminan Lapangan</h3>
+                    <p class="text-lg text-gray-600">Kami menjamin lapangan yang dipesan tersedia sesuai dengan waktu yang dipilih.</p>
+                </div>
+                <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-2xl font-bold mb-2">Pembayaran Aman</h3>
+                    <p class="text-lg text-gray-600">Kami menyediakan metode pembayaran yang aman dan dapat dipercaya.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!-- Visit us section -->
@@ -144,7 +154,7 @@
                                 <a class="flex m-1" href="tel:+919823331842">
                                     <div class="flex-shrink-0">
                                         <div
-                                            class="flex items-center justify-between h-10 w-30 rounded-md bg-indigo-500 text-white p-2">
+                                            class="flex items-center justify-between h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white p-2">
                                             <!-- Heroicon name: phone -->
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -157,7 +167,7 @@
 
                                 </a>
                             </div>
-                            <div class="px-6 py-4">
+                            <div class="border-t border-gray-200 px-6 py-4">
                                 <h3 class="text-lg font-medium text-gray-900">Alamat Kami</h3>
                                 <p class="mt-1 text-gray-600">Jl. Pelita I, Labuhan Ratu, Kec. Kedaton, Kota Bandar Lampung, Lampung 35132</p>
                             </div>
