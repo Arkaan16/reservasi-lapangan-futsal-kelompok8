@@ -6,7 +6,7 @@
     <title>Register | Futsal Reservation</title>
     @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-100">
+<body class="bg-blue-500">
 
     <div class="min-h-screen flex items-center justify-center px-4">
         <!-- Register Form Container -->
@@ -61,14 +61,14 @@
 
                 <!-- Register Button -->
                 <div class="mt-6">
-                    <button type="submit" class="w-full py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition duration-300">Register</button>
+                    <button type="submit" class="w-full py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 transition duration-300">Register</button>
                 </div>
             </form>
 
             <!-- Already Registered Link -->
             <p class="text-center text-sm text-gray-600 mt-4">
                 Already have an account? 
-                <a href="{{ route('login') }}" class="text-indigo-600 hover:underline">Login here</a>
+                <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login here</a>
             </p>
         </div>
     </div>

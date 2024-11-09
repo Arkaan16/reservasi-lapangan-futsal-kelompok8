@@ -55,6 +55,8 @@
                                     <th class="py-3 px-4 uppercase font-semibold text-sm">Jadwal</th>
                                     <th class="py-3 px-4 uppercase font-semibold text-sm">Status</th>
                                     <th class="py-3 px-4 uppercase font-semibold text-sm">Total Pembayaran</th>
+                                    <th class="py-3 px-4 uppercase font-semibold text-sm">Metode Pembayaran</th> <!-- Kolom Metode Pembayaran -->
+                                    <th class="py-3 px-4 uppercase font-semibold text-sm">Bukti Pembayaran</th> <!-- Kolom Bukti Pembayaran -->
                                     <th class="py-3 px-4 uppercase font-semibold text-sm">Aksi</th>
                                 </tr>
                             </thead>
@@ -82,8 +84,8 @@
                                     <td class="py-3 px-4">
                                         @if($booking->status == 'pending')
                                             <span class="text-yellow-500 font-semibold">Pending</span>
-                                        @elseif($booking->status == 'confirmed')
-                                            <span class="text-green-500 font-semibold">Confirmed</span>
+                                        @elseif($booking->status == 'paid')
+                                            <span class="text-green-500 font-semibold">Paid</span>
                                         @elseif($booking->status == 'completed')
                                             <span class="text-blue-500 font-semibold">Completed</span>
                                         @else
@@ -92,6 +94,16 @@
                                     </td>
                                     <td class="py-3 px-4">
                                         {{ $booking->payment ? number_format($booking->payment->amount, 2) . ' IDR' : 'Belum Dibayar' }}
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        {{ $booking->payment ? $booking->payment->payment_method : 'Tidak Ada' }} <!-- Menampilkan metode pembayaran -->
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        @if($booking->payment && $booking->payment->payment_proof)
+                                            <a href="{{ asset('storage/' . $booking->payment->payment_proof) }}" target="_blank" class="text-blue-600 hover:text-blue-900">Lihat Bukti</a> <!-- Link ke bukti pembayaran -->
+                                        @else
+                                            Tidak Ada Bukti
+                                        @endif
                                     </td>
                                     
                                     <td class="py-3 px-4 flex justify-center space-x-2">

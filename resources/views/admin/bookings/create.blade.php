@@ -27,6 +27,16 @@
     <!-- Sidebar -->
     @include('layouts.sidebar')
 
+    @if ($errors->any())
+    <div class="bg-red-500 text-white p-4 rounded">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <!-- Content Wrapper -->
     <div class="w-full flex flex-col h-screen overflow-y-hidden">
         <div class="w-full overflow-x-hidden border-t flex flex-col">
@@ -103,8 +113,10 @@
                         <h2 class="font-bold text-blue-600">Transfer Bank BNI</h2>
                         <img src="/assets/img/bank.png" alt="Logo BNI" class="h-10">
                         <p>Nomor Rekening: 123-456-789</p>
-                        <label for="payment_proof" class="block text-gray-700 mt-4">Upload Bukti Pembayaran</label>
-                        <input type="file" name="payment_proof" id="payment_proof" accept="image/*" class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+                        <div>
+                            <label for="payment_proof" class="block text-gray-700">Bukti Pembayaran</label>
+                            <input type="file" name="payment_proof" id="payment_proof" class="mt-1 block w-full bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-opacity-50">
+                        </div>
                     </div>
 
                     <button type="submit" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Buat Booking</button>
