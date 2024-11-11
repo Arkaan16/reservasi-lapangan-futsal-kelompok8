@@ -29,12 +29,15 @@
     
         <div class="toggle w-full text-end hidden md:flex md:w-auto px-2 py-2 md:rounded">
             @auth
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="flex items-center h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-medium p-2">
-                        Log Out
-                    </button>
-                </form>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700">Hello, {{ Auth::user()->name }}!</span> <!-- Menampilkan nama user -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="flex items-center h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-medium p-2">
+                            Log Out
+                        </button>
+                    </form>
+                </div>
             @else
                 <a href="{{ route('login') }}" class="flex items-center h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-medium p-2">
                     Log In
@@ -43,8 +46,29 @@
         </div>
     </nav>
     
-
-    <div class="bg-cover bg-center h-screen" style="background-image: url('/assets/img/lapanganfutsal.jpg');">
+    
+    <div class="relative bg-cover bg-center h-screen" style="background-image: url('/assets/img/lapanganfutsal.jpg');">
+        <!-- Weather Bar -->
+        <div id="weather" class="absolute top-4 left-4 bg-black bg-opacity-50 text-white p-4 rounded-lg flex items-center space-x-4 z-10">
+            @if(isset($weatherDescription) && isset($temperature))
+                <div class="flex items-center">
+                    <!-- Menampilkan Ikon Cuaca dengan warna biru menggunakan filter -->
+                    <img src="https://openweathermap.org/img/wn/{{ $weatherIcon }}@2x.png" alt="Weather Icon" class="w-16 h-16 filter hue-rotate-180 saturate-200" style="filter: invert(31%) sepia(91%) saturate(5900%) hue-rotate(180deg) brightness(95%) contrast(100%)">
+                    <div>
+                        <p id="weather-description" class="text-xl">{{ $weatherDescription }}</p>
+                        <p id="weather-temp" class="text-2xl font-bold">{{ $temperature }}°C</p>
+                        <!-- Menambahkan nama kota Jakarta -->
+                        <p id="weather-city" class="text-sm mt-2">Jakarta</p>
+                    </div>
+                </div>
+            @elseif(isset($error))
+                <p class="text-xl text-red-500">{{ $error }}</p>
+            @else
+                <p class="text-xl">Memuat data cuaca...</p>
+            @endif
+        </div>
+        
+    
         <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
             <div class="text-center text-white">
                 <h1 class="text-4xl md:text-6xl font-bold mb-4">Reservasi Lapangan Futsal</h1>
@@ -53,6 +77,8 @@
             </div>
         </div>
     </div>
+    
+    
 
     <!-- about us -->
     <section class="bg-gray-100" id="aboutus">
@@ -197,5 +223,28 @@
             <p>&copy; 2024 Sistem Reservasi Lapangan Futsal. Semua hak dilindungi.</p>
         </div>
     </footer>
+
+    <script>
+        // Ganti dengan API key kamu
+        const apiKey = 'e4eef249a39532aff45411e08ed49442'; // Ganti dengan API key yang kamu dapatkan
+        const city = 'Jakarta'; // Ganti dengan kota yang diinginkan
+        const units = 'metric'; // Untuk mendapatkan suhu dalam Celsius
+    
+        // Mengambil data cuaca dari OpenWeatherMap API
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+                const weatherDescription = data.weather[0].description;
+                const temperature = data.main.temp;
+    
+                // Menampilkan data cuaca di halaman
+                document.getElementById('weather-description').textContent = `Cuaca: ${weatherDescription}`;
+                document.getElementById('weather-temp').textContent = `${temperature}°C`;
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+            });
+    </script>
+    
 </body>
 </html>

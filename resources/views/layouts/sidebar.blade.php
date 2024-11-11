@@ -38,6 +38,13 @@
             Tabel Booking
         </a>
 
+        <!-- Tabel Pembayaran (Payment) -->
+        <a href="{{ route('admin.payments.index') }}" 
+           class="flex items-center {{ request()->routeIs('admin.payments.index') ? 'active-nav-link' : 'opacity-75 hover:opacity-100' }} py-4 pl-6 nav-item">
+            <i class="fas fa-credit-card mr-3"></i>
+            Tabel Pembayaran
+        </a>
+
         <!-- Log Out -->
         <form method="POST" action="{{ route('logout') }}" class="absolute w-full bottom-0">
             @csrf
