@@ -29,12 +29,15 @@
     
         <div class="toggle w-full text-end hidden md:flex md:w-auto px-2 py-2 md:rounded">
             @auth
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="flex items-center h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-medium p-2">
-                        Log Out
-                    </button>
-                </form>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700">Hello, {{ Auth::user()->name }}!</span> <!-- Menampilkan nama user -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="flex items-center h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-medium p-2">
+                            Log Out
+                        </button>
+                    </form>
+                </div>
             @else
                 <a href="{{ route('login') }}" class="flex items-center h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white font-medium p-2">
                     Log In
@@ -43,8 +46,29 @@
         </div>
     </nav>
     
-
-    <div class="bg-cover bg-center h-screen" style="background-image: url('/assets/img/lapanganfutsal.jpg');">
+    
+    <div class="relative bg-cover bg-center h-screen" style="background-image: url('/assets/img/lapanganfutsal.jpg');">
+        <!-- Weather Bar -->
+        <div id="weather" class="absolute top-4 left-4 bg-black bg-opacity-50 text-white p-4 rounded-lg flex items-center space-x-4 z-10">
+            @if(isset($weatherDescription) && isset($temperature))
+                <div class="flex items-center">
+                    <!-- Menampilkan Ikon Cuaca dengan warna biru menggunakan filter -->
+                    <img src="https://openweathermap.org/img/wn/{{ $weatherIcon }}@2x.png" alt="Weather Icon" class="w-16 h-16 filter hue-rotate-180 saturate-200" style="filter: invert(31%) sepia(91%) saturate(5900%) hue-rotate(180deg) brightness(95%) contrast(100%)">
+                    <div>
+                        <p id="weather-description" class="text-xl">{{ $weatherDescription }}</p>
+                        <p id="weather-temp" class="text-2xl font-bold">{{ $temperature }}°C</p>
+                        <!-- Menambahkan nama kota Jakarta -->
+                        <p id="weather-city" class="text-sm mt-2">Jakarta</p>
+                    </div>
+                </div>
+            @elseif(isset($error))
+                <p class="text-xl text-red-500">{{ $error }}</p>
+            @else
+                <p class="text-xl">Memuat data cuaca...</p>
+            @endif
+        </div>
+        
+    
         <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
             <div class="text-center text-white">
                 <h1 class="text-4xl md:text-6xl font-bold mb-4">Reservasi Lapangan Futsal</h1>
@@ -53,6 +77,8 @@
             </div>
         </div>
     </div>
+    
+    
 
     <!-- about us -->
     <section class="bg-gray-100" id="aboutus">
@@ -77,6 +103,7 @@
         </div>
     </section>
 
+    <!-- Lapangan Tersedia -->
     <div class="container mx-auto py-12">
         <h2 class="text-3xl font-extrabold text-center mb-12" id="fields">Lapangan Tersedia</h2>
     
@@ -90,7 +117,16 @@
                             <p class="text-gray-600 mb-4">{{ $field->location }}</p>
                             <p class="text-gray-600">{{ $field->description }}</p>
                             <p class="text-blue-600 font-bold mt-4">Rp {{ number_format($field->price_per_hour, 0, ',', '.') }} / jam</p>
-                            <a href=".." class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">Pesan Sekarang</a>
+                            {{-- {{ route('reservasi.create', $field->id) }} --}}
+                            @auth
+                                <a href="#" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
+                                    Pesan Sekarang
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
+                                    Pesan Sekarang
+                                </a>
+                            @endauth
                         </div>
                     </div>
                 @endforeach
@@ -98,32 +134,32 @@
                 <p>Tidak ada lapangan yang tersedia.</p>
             @endif
         </div>
-
     </div>
+    
 
     <!-- Informasi Layanan -->
-<div class="bg-gray-100 py-16">
-    <div class="container mx-auto text-center">
-        <h2 class="text-3xl font-extrabold mb-8" id="layanan">Kenapa Pilih Kami?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
-                <h3 class="text-2xl font-bold mb-2">Mudah & Cepat</h3>
-                <p class="text-lg text-gray-600">Proses reservasi lapangan futsal kami mudah dan cepat, hanya dengan beberapa klik.</p>
-            </div>
-            <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
-                <h3 class="text-2xl font-bold mb-2">Jaminan Lapangan</h3>
-                <p class="text-lg text-gray-600">Kami menjamin lapangan yang dipesan tersedia sesuai dengan waktu yang dipilih.</p>
-            </div>
-            <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
-                <h3 class="text-2xl font-bold mb-2">Pembayaran Aman</h3>
-                <p class="text-lg text-gray-600">Kami menyediakan metode pembayaran yang aman dan dapat dipercaya.</p>
+    <div class="bg-gray-100 py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-extrabold mb-8" id="layanan">Kenapa Pilih Kami?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-2xl font-bold mb-2">Mudah & Cepat</h3>
+                    <p class="text-lg text-gray-600">Proses reservasi lapangan futsal kami mudah dan cepat, hanya dengan beberapa klik.</p>
+                </div>
+                <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-2xl font-bold mb-2">Jaminan Lapangan</h3>
+                    <p class="text-lg text-gray-600">Kami menjamin lapangan yang dipesan tersedia sesuai dengan waktu yang dipilih.</p>
+                </div>
+                <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <h3 class="text-2xl font-bold mb-2">Pembayaran Aman</h3>
+                    <p class="text-lg text-gray-600">Kami menyediakan metode pembayaran yang aman dan dapat dipercaya.</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!-- Visit us section -->
@@ -144,7 +180,7 @@
                                 <a class="flex m-1" href="tel:+919823331842">
                                     <div class="flex-shrink-0">
                                         <div
-                                            class="flex items-center justify-between h-10 w-30 rounded-md bg-indigo-500 text-white p-2">
+                                            class="flex items-center justify-between h-10 w-30 rounded-md bg-blue-500 hover:bg-blue-700 text-white p-2">
                                             <!-- Heroicon name: phone -->
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -157,7 +193,7 @@
 
                                 </a>
                             </div>
-                            <div class="px-6 py-4">
+                            <div class="border-t border-gray-200 px-6 py-4">
                                 <h3 class="text-lg font-medium text-gray-900">Alamat Kami</h3>
                                 <p class="mt-1 text-gray-600">Jl. Pelita I, Labuhan Ratu, Kec. Kedaton, Kota Bandar Lampung, Lampung 35132</p>
                             </div>
@@ -187,5 +223,28 @@
             <p>&copy; 2024 Sistem Reservasi Lapangan Futsal. Semua hak dilindungi.</p>
         </div>
     </footer>
+
+    <script>
+        // Ganti dengan API key kamu
+        const apiKey = 'e4eef249a39532aff45411e08ed49442'; // Ganti dengan API key yang kamu dapatkan
+        const city = 'Jakarta'; // Ganti dengan kota yang diinginkan
+        const units = 'metric'; // Untuk mendapatkan suhu dalam Celsius
+    
+        // Mengambil data cuaca dari OpenWeatherMap API
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=${apiKey}`)
+            .then(response => response.json())
+            .then(data => {
+                const weatherDescription = data.weather[0].description;
+                const temperature = data.main.temp;
+    
+                // Menampilkan data cuaca di halaman
+                document.getElementById('weather-description').textContent = `Cuaca: ${weatherDescription}`;
+                document.getElementById('weather-temp').textContent = `${temperature}°C`;
+            })
+            .catch(error => {
+                console.error('Error fetching weather data:', error);
+            });
+    </script>
+    
 </body>
 </html>

@@ -12,11 +12,10 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'field_id',
-        'booking_date',
-        'start_time',
-        'end_time',
-        'total_price',
-        'status',
+        'schedule_id',
+        'booking_name',
+        'phone_number',
+        'status'
     ];
 
     public function user()
@@ -27,5 +26,15 @@ class Booking extends Model
     public function field()
     {
         return $this->belongsTo(Field::class);
+    }
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }

@@ -6,7 +6,7 @@
     <title>Login | Futsal Reservation</title>
     @vite('resources/css/app.css')
 </head>
-<body class="bg-gray-100">
+<body class="bg-blue-500">
 
     <div class="min-h-screen flex items-center justify-center">
         <!-- Login Container -->
@@ -56,20 +56,20 @@
                     </label>
                     
                     @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}" class="text-sm text-indigo-600 hover:underline">Forgot password?</a>
+                        <a href="{{ route('password.request') }}" class="text-sm text-blue-500 hover:underline">Forgot password?</a>
                     @endif
                 </div>
 
                 <!-- Submit Button -->
                 <div class="mt-6">
-                    <button type="submit" class="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition duration-300">Login</button>
+                    <button type="submit" class="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300">Login</button>
                 </div>
             </form>
 
             <!-- Sign Up Link -->
             <p class="text-center text-sm text-gray-600 mt-4">
                 Don't have an account? 
-                <a href="{{ route('register') }}" class="text-indigo-600 hover:underline">Sign up</a>
+                <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Sign up</a>
             </p>
         </div>
     </div>
