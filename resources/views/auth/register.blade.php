@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | Futsal Reservation</title>
+    <link rel="icon" href="/assets/img/logof.png" type="image/png">
     @vite('resources/css/app.css')
 </head>
 <body class="bg-blue-500">
