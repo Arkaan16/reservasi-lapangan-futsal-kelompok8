@@ -9,7 +9,6 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +49,7 @@ Route::get('/', function () {
     $weatherData = $weatherController->showWeather(); // Menampilkan data cuaca
 
     // Gabungkan data lapangan dan cuaca
-    return view('index', array_merge(['fields' => $fields], $weatherData));
+    return view('landing-page.index', array_merge(['fields' => $fields], $weatherData));
 })->name('index');
 
 
