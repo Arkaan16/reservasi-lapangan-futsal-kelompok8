@@ -97,10 +97,10 @@ class BookingController extends Controller
         $booking->delete();
 
         return redirect()->route('admin.bookings.index')->with('success', 'Booking berhasil dihapus');
-    }
+    }   
 
     public function getSchedules(Request $request)
-{
+    {
     // Validasi input
     $validated = $request->validate([
         'field_id' => 'required|exists:fields,id',

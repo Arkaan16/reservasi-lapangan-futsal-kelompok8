@@ -9,6 +9,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\UserBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,7 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::put('bookings/{booking}', [BookingController::class, 'update'])->name('admin.bookings.update');
     Route::delete('bookings/{booking}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
     
+    
     // Rute manual untuk users
     Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('users/create', [UserController::class, 'create'])->name('admin.users.create');
@@ -117,5 +119,13 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('admin.payments.show');
     Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('admin.payments.update');
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('admin.payments.destroy');
+
+    //untuk booking user
+    Route::get('/user/bookings/create/{field}', [UserBookingController::class, 'create'])->name('user.bookings.create');
+    Route::post('/user/bookings', [UserBookingController::class, 'store'])->name('user.bookings.store');
+
+
+
+    
 });
 
