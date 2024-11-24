@@ -70,9 +70,8 @@
                             <p class="text-gray-600 mb-4">{{ $field->location }}</p>
                             <p class="text-gray-600">{{ $field->description }}</p>
                             <p class="text-blue-600 font-bold mt-4">Rp {{ number_format($field->price_per_hour, 0, ',', '.') }} / jam</p>
-                            {{-- {{ route('reservasi.create', $field->id) }} --}}
                             @auth
-                                <a href="#" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
+                                <a href="{{ route('user.bookings.create', $field->id) }}" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
                                     Pesan Sekarang
                                 </a>
                             @else

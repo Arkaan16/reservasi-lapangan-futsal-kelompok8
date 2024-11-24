@@ -14,7 +14,7 @@
                 @csrf
                 <div class="bg-white p-6 rounded-lg shadow-md">
                     <div class="mb-4">
-                        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nama Lapangan:</label>
+                        <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nama Lapangan</label>
                         <input type="text" name="name" id="name" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 

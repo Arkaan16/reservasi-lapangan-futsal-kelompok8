@@ -53,7 +53,6 @@
                             <label for="booking_name" class="block text-sm font-medium text-gray-700">Nama Pemesan</label>
                             <input type="text" name="booking_name" id="booking_name" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm" required>
                         </div>
-                        
 
                         <div class="mb-4">
                             <label for="phone_number" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
@@ -69,19 +68,28 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
                         <div class="mb-4">
                             <label for="schedule_date" class="block text-sm font-medium text-gray-700">Tanggal</label>
-                            <input type="date" id="schedule_date" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
+                            <input type="date" id="schedule_date" name="schedule_date" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
                         </div>
-                        
-                        <div class="mb-4">
+
+                        <!-- <div class="mb-4">
                             <label for="schedule_id" class="block text-sm font-medium text-gray-700">Jadwal</label>
                             <select name="schedule_id" id="schedule_id" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
                                 <option value="">Pilih Jadwal</option>
                             </select>
+                        </div> -->
+
+                        <div>
+                            <label for="schedule_id" class="block text-sm font-medium text-gray-700"> Pilih Jadwal</label>
+                            <select name="schedule_id" id="schedule_id" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm" required>
+                                @foreach($schedules as $schedule)
+                                    <option value="{{ $schedule->id }}">{{ $schedule->start_time }} - {{ $schedule->end_time }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        
+
                         <div class="mb-4">
                             <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                             <select name="status" id="status" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
@@ -107,55 +115,45 @@
         document.getElementById('field_id').addEventListener('change', function() {
             updateSchedules();
         });
-    
+
         document.getElementById('schedule_date').addEventListener('change', function() {
             updateSchedules();
         });
-    
-        console.log(schedules); // Menampilkan data jadwal yang diterima
 
-function updateSchedule() {
-    const fieldId = document.getElementById('field_id').value;
-    const date = document.getElementById('date').value;
-    const scheduleSelect = document.getElementById('schedule_id');
+        function updateSchedules() {
+            const fieldId = document.getElementById('field_id').value;
+            const date = document.getElementById('schedule_date').value;
+            const scheduleSelect = document.getElementById('schedule_id');
 
-    // Kosongkan pilihan jadwal
-    scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+            // Kosongkan pilihan jadwal
+            scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
 
-    if (fieldId && date) {
-        // Filter jadwal berdasarkan lapangan dan tanggal
-        const availableSchedules = schedules.filter(schedule => 
-            schedule.field_id == fieldId && 
-            schedule.date === date && 
-            schedule.is_available // Pastikan status ketersediaan
-        );
+            if (fieldId && date) {
+                // Filter jadwal berdasarkan lapangan dan tanggal
+                const availableSchedules = @json($schedules).filter(schedule => 
+                    schedule.field_id == fieldId && 
+                    schedule.date === date && 
+                    schedule.is_available
+                );
 
-        console.log(availableSchedules); // Menampilkan jadwal yang terfilter
-
-        // Jika ada jadwal yang tersedia
-        if (availableSchedules.length > 0) {
-            availableSchedules.forEach(schedule => {
-                const option = document.createElement('option');
-                option.value = schedule.id;
-                option.textContent = `${schedule.start_time} - ${schedule.end_time}`;
-                scheduleSelect.appendChild(option);
-            });
-        } else {
-            // Tampilkan pesan jika tidak ada jadwal yang tersedia
-            const option = document.createElement('option');
-            option.value = '';
-            option.textContent = 'Tidak ada jadwal tersedia';
-            scheduleSelect.appendChild(option);
+                // Jika ada jadwal yang tersedia
+                if (availableSchedules.length > 0) {
+                    availableSchedules.forEach(schedule => {
+                        const option = document.createElement('option');
+                        option.value = schedule.id;
+                        option.textContent = `${schedule.start_time} - ${schedule.end_time}`;
+                        scheduleSelect.appendChild(option);
+                    });
+                } else {
+                    // Tampilkan pesan jika tidak ada jadwal yang tersedia
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'Tidak ada jadwal tersedia';
+                    scheduleSelect.appendChild(option);
+                }
+            }
         }
-    }
-
-    updateAmount(); // Memperbarui jumlah pembayaran setiap kali jadwal diperbarui
-}
-
     </script>
-    
 
-    <!-- AlpineJS -->
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </body>
 </html>

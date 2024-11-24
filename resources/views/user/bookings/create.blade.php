@@ -11,7 +11,7 @@
 <body class="bg-gray-100 font-sans">
 
     <div class="w-full max-w-md mx-auto mt-10 bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-2xl font-bold mb-4">Tambah Booking Baru</h1>
+        <h1 class="text-2xl font-bold mb-4">Pemesanan Lapangan Futsal</h1>
 
         @if(session('success'))
             <div class="bg-green-100 text-green-800 p-4 mb-4 rounded">
@@ -47,10 +47,12 @@
                 <input type="date" id="schedule_date" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm" required>
             </div>
             
-            <div class="mb-4">
-                <label for="schedule_id" class="block text-sm font-medium text-gray-700">Jadwal</label>
+            <div>
+                <label for="schedule_id" class="block text-sm font-medium text-gray-700"> Pilih Jadwal</label>
                 <select name="schedule_id" id="schedule_id" class="block w-full mt-1 bg-gray-100 border border-gray-300 rounded-md shadow-sm" required>
-                    <option value="">Pilih Jadwal</option>
+                    @foreach($schedules as $schedule)
+                        <option value="{{ $schedule->id }}">{{ $schedule->start_time }} - {{ $schedule->end_time }}</option>
+                    @endforeach
                 </select>
             </div>
 
@@ -67,16 +69,24 @@
         document.getElementById('schedule_date').addEventListener('change', updateSchedules);
 
         function updateSchedules() {
-            const fieldId = document.getElementById('field_id').value;
+            const field_id = document.getElementById('field_id').value;
             const date = document.getElementById('schedule_date').value;
             const scheduleSelect = document.getElementById('schedule_id');
 
-            scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+            scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>'; // Clear previous options
 
-            if (fieldId && date) {
-                fetch(`/get-schedules?field_id=${fieldId}&date=${date}`)
-                    .then(response => response.json())
+            // Pastikan field_id dan date sudah benar
+            console.log('Field ID:', field_id);
+            console.log('Date:', date);
+
+            if (field_id && date) {
+                fetch(`/get-schedules?field_id=${field_id}&date=${date}`)
+                    .then(response => {
+                        console.log('Response:', response);
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log('Schedules:', data);
                         if (data.length > 0) {
                             data.forEach(schedule => {
                                 const option = document.createElement('option');

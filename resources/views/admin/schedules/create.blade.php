@@ -22,9 +22,19 @@
                         </select>
                     </div>
 
+                    <!-- Ganti Input Tanggal ke Pilihan Hari -->
                     <div class="mb-4">
-                        <label for="date" class="block text-gray-700 text-sm font-bold mb-2">Tanggal:</label>
-                        <input type="date" name="date" id="date" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="day" class="block text-gray-700 text-sm font-bold mb-2">Pilih Hari:</label>
+                        <select name="day" id="day" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">-- Pilih Hari --</option>
+                            <option value="1">Senin</option>
+                            <option value="2">Selasa</option>
+                            <option value="3">Rabu</option>
+                            <option value="4">Kamis</option>
+                            <option value="5">Jumat</option>
+                            <option value="6">Sabtu</option>
+                            <option value="0">Minggu</option>
+                        </select>
                     </div>
 
                     <div class="mb-4">
