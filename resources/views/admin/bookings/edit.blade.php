@@ -29,7 +29,7 @@
 <body class="bg-gray-100 font-family-karla flex">
 
     <!-- Sidebar -->
-    @include('layouts.sidebar')
+    @include('components.sidebar')
 
     <!-- Content Wrapper -->
     <div class="w-full flex flex-col h-screen overflow-y-hidden">

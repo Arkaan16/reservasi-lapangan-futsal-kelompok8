@@ -23,9 +23,10 @@
                         <thead class="bg-gray-800 text-white">
                             <tr>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Lapangan</th>
-                                <th class="py-3 px-4 uppercase font-semibold text-sm">Tanggal</th>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Hari</th>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Jam Mulai</th>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Jam Selesai</th>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Berulang</th>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Ketersediaan</th>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Aksi</th>
                             </tr>
@@ -34,9 +35,16 @@
                             @foreach($schedules as $schedule)
                             <tr class="border-b">
                                 <td class="py-3 px-4">{{ $schedule->field->name }}</td>
-                                <td class="py-3 px-4">{{ $schedule->date }}</td>
+                                <td class="py-3 px-4">{{ $schedule->day }}</td> <!-- Menampilkan hari -->
                                 <td class="py-3 px-4">{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}</td>
                                 <td class="py-3 px-4">{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}</td>
+                                <td class="py-3 px-4">
+                                    @if($schedule->is_recurring)
+                                        <span class="text-green-500 font-semibold">Ya</span>
+                                    @else
+                                        <span class="text-red-500 font-semibold">Tidak</span>
+                                    @endif
+                                </td>
                                 <td class="py-3 px-4">
                                     @if($schedule->is_available)
                                         <span class="text-green-500 font-semibold">Tersedia</span>

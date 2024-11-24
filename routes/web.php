@@ -75,6 +75,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     // Dashboard dan cuaca
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/weather/{city}', [WeatherController::class, 'showWeather']);
+    Route::get('bookings/getSchedules', [BookingController::class, 'getSchedules'])->name('admin.bookings.getSchedules');
+    Route::get('/get-schedules', [BookingController::class, 'getSchedules'])->name('getSchedules');
+
     
     // Rute manual untuk fields
     Route::get('fields', [FieldController::class, 'index'])->name('admin.fields.index');

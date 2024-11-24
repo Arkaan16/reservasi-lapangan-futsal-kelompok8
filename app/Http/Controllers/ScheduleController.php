@@ -25,23 +25,26 @@ class ScheduleController extends Controller
         // Validasi input
         $request->validate([
             'field_id' => 'required|exists:fields,id',
-            'date' => 'required|date',
+            'day' => 'required|string|max:10', // Validasi untuk hari
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'is_available' => 'boolean',
+            'is_available' => 'required|boolean',
+            'is_available' => 'required|boolean',
         ]);
 
         // Membuat jadwal baru
         Schedule::create([
             'field_id' => $request->field_id,
-            'date' => $request->date,
+            'day' => $request->day, // Simpan hari
             'start_time' => $request->start_time,
             'end_time' => $request->end_time,
             'is_available' => $request->is_available ? 1 : 0,
+            'is_recurring' => $request->has('is_recurring') ? 1 : 0,
         ]);
 
         return redirect()->route('admin.schedules.index')->with('success', 'Jadwal berhasil ditambahkan.');
     }
+
 
     public function show(Schedule $schedule)
     {

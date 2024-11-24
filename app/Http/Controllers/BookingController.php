@@ -107,12 +107,19 @@ class BookingController extends Controller
         'date' => 'required|date',
     ]);
 
-    // Ambil jadwal berdasarkan lapangan dan tanggal
+    // Konversi tanggal yang dipilih menjadi nama hari
+    $day = \Carbon\Carbon::parse($validated['date'])->locale('id')->isoFormat('dddd'); // "Senin", "Selasa", dst.
+    
+ // Cek log aplikasi untuk memastikan tanggal yang diterima
+    
+    // Ambil jadwal berdasarkan lapangan, hari, dan status tersedia
     $schedules = Schedule::where('field_id', $validated['field_id'])
-                         ->where('date', $validated['date'])
-                         ->where('is_available', true) // Pastikan jadwal tersedia
+                         ->where('day', ucfirst($day))  // Mencocokkan nama hari (case sensitive)
+                         ->where('is_available', true) // Pastikan hanya jadwal yang tersedia yang diambil
                          ->get();
 
     return response()->json($schedules);
 }
+
+
 }
