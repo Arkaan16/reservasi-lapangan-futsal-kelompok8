@@ -32,25 +32,37 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-        $validated = $request->validate([
+        $request->validate([
             'field_id' => 'required|exists:fields,id',
-            'schedule_id' => 'required|exists:schedules,id',
-            'booking_name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:13',
+            'date' => 'required|date',
+            'schedule_id' => 'required|exists:schedules,id', // pastikan memilih jadwal yang ada
         ]);
 
-        // Simpan booking, tanpa perlu memilih user_id, karena menggunakan Auth::id()
-        Booking::create([
-            'user_id' => Auth::id(), // Menggunakan user yang sedang login
-            'field_id' => $validated['field_id'],
-            'schedule_id' => $validated['schedule_id'],
-            'booking_name' => $validated['booking_name'],
-            'phone_number' => $validated['phone_number'],
+        // Mendapatkan jadwal yang dipilih
+        $schedule = Schedule::find($request->schedule_id);
+            if ($schedule->is_available == 0) {
+                return redirect()->back()->with('error', 'Jadwal sudah dipesan.');
+            }
+
+        // Menyimpan booking dengan menambahkan tanggal yang dipilih
+        $booking = Booking::create([
+            'user_id' => auth()->id(),
+            'field_id' => $request->field_id,
+            'schedule_id' => $schedule->id,
+            'booking_name' => $request->booking_name,
+            'phone_number' => $request->phone_number,
             'status' => 'pending',
         ]);
 
-        return redirect()->route('admin.bookings.index')->with('success', 'Booking berhasil dibuat');
+        // Memperbarui jadwal untuk menyimpan tanggal booking
+        $schedule->update([
+            'date' => $request->date,  // Menyimpan tanggal booking ke dalam jadwal
+            'is_available' => 0
+        ]);
+
+        return redirect()->route('admin.bookings.index')->with('success', 'Booking berhasil dibuat!');
     }
+
 
     public function edit(Booking $booking)
     {
@@ -58,7 +70,8 @@ class BookingController extends Controller
         if (Auth::id() !== $booking->user_id && Auth::user()->role !== 'admin') {
             return redirect()->route('admin.bookings.index')->with('error', 'Anda tidak memiliki izin untuk mengedit booking ini.');
         }
-
+        
+        $booking = $booking->load('schedule'); 
         $fields = Field::all();
         $schedules = Schedule::all();
         return view('admin.bookings.edit', compact('booking', 'fields', 'schedules'));
@@ -80,11 +93,38 @@ class BookingController extends Controller
             'status' => 'required|in:pending,confirmed,completed,canceled',
         ]);
 
-        // Update booking
+        // Jika jadwal berubah, kembalikan jadwal lama menjadi tersedia
+        if ($booking->schedule_id !== $validated['schedule_id']) {
+            $oldSchedule = Schedule::find($booking->schedule_id);
+            if ($oldSchedule) {
+                $oldSchedule->update(['is_available' => true]);
+            }
+        }
+
+        // Update booking dengan data baru
         $booking->update($validated);
 
+        // Ambil jadwal baru
+        $schedule = Schedule::find($validated['schedule_id']);
+        if ($schedule) {
+            // Perbarui status ketersediaan jadwal berdasarkan status booking
+            switch ($validated['status']) {
+                case 'pending':
+                case 'confirmed':
+                    $schedule->update(['is_available' => false]); // Jadwal tidak tersedia
+                    break;
+                case 'completed':
+                case 'canceled':
+                    $schedule->update(['is_available' => true]); // Jadwal tersedia kembali
+                    break;
+            }
+        }
+
+        // Redirect dengan pesan sukses
         return redirect()->route('admin.bookings.index')->with('success', 'Booking berhasil diperbarui');
     }
+
+
 
     public function destroy(Booking $booking)
     {
@@ -100,26 +140,26 @@ class BookingController extends Controller
     }
 
     public function getSchedules(Request $request)
-{
-    // Validasi input
-    $validated = $request->validate([
-        'field_id' => 'required|exists:fields,id',
-        'date' => 'required|date',
-    ]);
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'field_id' => 'required|exists:fields,id',
+            'date' => 'required|date',
+        ]);
 
-    // Konversi tanggal yang dipilih menjadi nama hari
-    $day = \Carbon\Carbon::parse($validated['date'])->locale('id')->isoFormat('dddd'); // "Senin", "Selasa", dst.
-    
- // Cek log aplikasi untuk memastikan tanggal yang diterima
-    
-    // Ambil jadwal berdasarkan lapangan, hari, dan status tersedia
-    $schedules = Schedule::where('field_id', $validated['field_id'])
-                         ->where('day', ucfirst($day))  // Mencocokkan nama hari (case sensitive)
-                         ->where('is_available', true) // Pastikan hanya jadwal yang tersedia yang diambil
-                         ->get();
+        // Konversi tanggal yang dipilih menjadi nama hari
+        $day = \Carbon\Carbon::parse($validated['date'])->locale('id')->isoFormat('dddd'); // "Senin", "Selasa", dst.
+        
+    // Cek log aplikasi untuk memastikan tanggal yang diterima
+        
+        // Ambil jadwal berdasarkan lapangan, hari, dan status tersedia
+        $schedules = Schedule::where('field_id', $validated['field_id'])
+                            ->where('day', ucfirst($day))  // Mencocokkan nama hari (case sensitive)
+                            ->where('is_available', true) // Pastikan hanya jadwal yang tersedia yang diambil
+                            ->get();
 
-    return response()->json($schedules);
-}
+        return response()->json($schedules);
+    }
 
 
-}
+    }

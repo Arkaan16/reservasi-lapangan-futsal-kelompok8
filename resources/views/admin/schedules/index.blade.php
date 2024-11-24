@@ -24,6 +24,7 @@
                             <tr>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Lapangan</th>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Hari</th>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Tanggal Pemesanan</th> <!-- Menambahkan kolom Tanggal -->
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Jam Mulai</th>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Jam Selesai</th>
                                 <th class="py-3 px-4 uppercase font-semibold text-sm">Berulang</th>
@@ -36,6 +37,13 @@
                             <tr class="border-b">
                                 <td class="py-3 px-4">{{ $schedule->field->name }}</td>
                                 <td class="py-3 px-4">{{ $schedule->day }}</td> <!-- Menampilkan hari -->
+                                <td class="py-3 px-4">
+                                    @if($schedule->date)
+                                        {{ \Carbon\Carbon::parse($schedule->date)->format('d M Y') }} <!-- Menampilkan tanggal -->
+                                    @else
+                                        <span class="text-red-500">Belum Ditetapkan</span>
+                                    @endif
+                                </td> <!-- Menampilkan Tanggal -->
                                 <td class="py-3 px-4">{{ \Carbon\Carbon::parse($schedule->start_time)->format('H:i') }}</td>
                                 <td class="py-3 px-4">{{ \Carbon\Carbon::parse($schedule->end_time)->format('H:i') }}</td>
                                 <td class="py-3 px-4">

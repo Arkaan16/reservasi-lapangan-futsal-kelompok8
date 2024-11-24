@@ -16,6 +16,7 @@ class Schedule extends Model
         'end_time',
         'is_available',
         'is_recurring',
+        'date',
     ];
     
     public function field()

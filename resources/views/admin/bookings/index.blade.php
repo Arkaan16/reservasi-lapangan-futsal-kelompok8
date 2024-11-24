@@ -60,7 +60,7 @@
                             <tbody class="text-gray-700">
                                 @foreach($bookings as $booking)
                                 <tr class="border-b">
-                                    <td class="py-3 px-4">{{ $booking->user->name }}</td> <!-- Atas Nama Booking -->
+                                    <td class="py-3 px-4">{{ $booking->booking_name }}</td> <!-- Atas Nama Booking -->
                                     <td class="py-3 px-4">{{ $booking->user->name }}</td>
                                     <td class="py-3 px-4">{{ $booking->phone_number }}</td>
                                     <td class="py-3 px-4">{{ $booking->field->name }}</td>
