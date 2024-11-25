@@ -21,10 +21,6 @@ use App\Http\Controllers\ScheduleController;
 |
 */
 
-// Rute untuk halaman depan
-// Route::get('/', [FieldController::class, 'indexForUser'])->name('index');
-// Route::get('/', [WeatherController::class, 'showWeather'])->name('index');
-
 // routes/web.php
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
@@ -35,10 +31,6 @@ Route::post('register', [AuthController::class, 'register']);
 
 // Logout
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('/bookings/create', [BookingController::class, 'create'])->name('bookings.create');
-Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
-
 
 Route::get('/', function () {
     // Ambil data lapangan dari FieldController
@@ -52,29 +44,57 @@ Route::get('/', function () {
     return view('landing-page.index', array_merge(['fields' => $fields], $weatherData));
 })->name('index');
 
+Route::get('/getSchedules', function () {
+    return view('landing-page.index');
+})->name('user.bookings.create');
+
 
 
 // Rute untuk halaman dashboard yang hanya bisa diakses oleh pengguna yang terautentikasi
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Rute untuk mendapatkan jadwal
+    Route::get('/user/bookings/getSchedules', [BookingController::class, 'getSchedules'])->name('user.bookings.getSchedules');
+
+    // Landing Page
+    Route::get('/landing-page', [BookingController::class, 'showLandingPage'])->name('landing-page');
+
+    // Dashboard User
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Rute untuk profil pengguna
-   
+    // Rute untuk halaman administrasi user
+    Route::get('user/administration', [BookingController::class, 'indexBookingsUser'])->name('user.administration.index');
 
-    // Rute untuk pemesanan, hanya dapat diakses oleh pengguna yang terautentikasi
-    Route::prefix('bookings')->name('bookings.')->group(function () {
+    // Rute untuk membatalkan booking
+    Route::post('user/bookings/cancel/{bookingId}', [BookingController::class, 'cancel'])->name('user.bookings.cancel');
+
+    // Rute untuk bookings oleh user
+    Route::prefix('user/bookings')->name('user.bookings.')->group(function () {
         Route::get('/create', [BookingController::class, 'create'])->name('create');
         Route::post('/store', [BookingController::class, 'store'])->name('store');
+        Route::post('/cancel/{bookingId}', [BookingController::class, 'cancel'])->name('cancel');
     });
+
+    // Rute untuk melihat pembayaran user
+    Route::get('user/payments', [PaymentController::class, 'userPayments'])->name('user.payments.index');
+    
+    // Rute untuk membuat pembayaran (hanya untuk user)
+    Route::get('user/payments/create/{bookingId}', [PaymentController::class, 'create'])->name('user.payments.create');
+    Route::post('user/payments/store/{bookingId}', [PaymentController::class, 'store'])->name('user.payments.store');
 });
+
 
 // Rute Admin dengan middleware auth dan admin
 Route::middleware('admin')->prefix('admin')->group(function () {
     // Dashboard dan cuaca
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/weather/{city}', [WeatherController::class, 'showWeather']);
+    Route::get('bookings/getSchedules', [BookingController::class, 'getSchedules'])->name('admin.bookings.getSchedules');
+    Route::get('user/administration', function () {
+        return view('user.administration.index');
+    })->name('administration.index');
+
     
     // Rute manual untuk fields
     Route::get('fields', [FieldController::class, 'index'])->name('admin.fields.index');
@@ -114,6 +134,14 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     
     // Rute manual untuk payments
     Route::get('payments', [PaymentController::class, 'index'])->name('admin.payments.index');
+    
+    Route::post('payments/{bookingId}', [PaymentController::class, 'store'])->name('admin.payments.store');
+    Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('admin.payments.edit');
+
+    // Rute manual untuk payments
+    Route::get('payments/create/{bookingId}', [PaymentController::class, 'create'])->name('admin.payments.create');
+    Route::post('payments/store/{bookingId}', [PaymentController::class, 'store'])->name('admin.payments.store');
+
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('admin.payments.show');
     Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('admin.payments.update');
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('admin.payments.destroy');

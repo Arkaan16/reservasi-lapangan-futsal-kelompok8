@@ -10,11 +10,14 @@
         </button>
     </div>
     <div class="toggle hidden w-full md:w-auto md:flex text-right text-bold mt-5 md:mt-0 md:border-none">
-        <a href="#home" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Beranda</a>
-        <a href="#aboutus" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Tentang Kami</a>
-        <a href="#fields" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Lapangan</a>
-        <a href="#layanan" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Layanan</a>
-        <a href="#contactUs" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Lokasi</a>
+        <a href="{{ url('/') }}#beranda" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Beranda</a>
+        <a href="{{ url('/') }}#aboutus" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Tentang Kami</a>
+        <a href="{{ url('/') }}#fields" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Lapangan</a>
+        <a href="{{ url('/') }}#layanan" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Layanan</a>
+        <a href="{{ url('/') }}#contactUs" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Lokasi</a>
+        @auth
+        <a href="{{ route('user.administration.index') }}" class="block md:inline-block hover:text-blue-500 px-3 py-3 md:border-none">Administrasi</a>
+        @endauth
     </div>
 
     <div class="toggle w-full text-end hidden md:flex md:w-auto px-2 py-2 md:rounded">

@@ -11,12 +11,14 @@ class Schedule extends Model
 
     protected $fillable = [
         'field_id',
-        'date',
+        'day', // Tambahkan kolom day
         'start_time',
         'end_time',
         'is_available',
+        'is_recurring',
+        'date',
     ];
-
+    
     public function field()
     {
         return $this->belongsTo(Field::class);
