@@ -5,7 +5,7 @@
 @section('content')
     @include('components.navbar')
     <!-- Hero Section -->
-    <div class="relative bg-cover bg-center h-screen" style="background-image: url('/assets/img/lapanganfutsal.jpg');">
+    <div class="relative bg-cover bg-center h-screen" style="background-image: url('/assets/img/lapanganfutsal.jpg');" id="beranda">
         <!-- Weather Bar -->
         <div id="weather" class="absolute top-4 left-4 bg-black bg-opacity-50 text-white p-4 rounded-lg flex items-center space-x-4 z-10">
             @if(isset($weatherDescription) && isset($temperature))
@@ -72,9 +72,11 @@
                             <p class="text-blue-600 font-bold mt-4">Rp {{ number_format($field->price_per_hour, 0, ',', '.') }} / jam</p>
                             {{-- {{ route('reservasi.create', $field->id) }} --}}
                             @auth
-                                <a href="#" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
-                                    Pesan Sekarang
-                                </a>
+                            <button
+                                onclick="openModal({{ $field->id }}, '{{ $field->name }}', '{{ $field->price_per_hour }}')"
+                                class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
+                                Pesan Sekarang
+                            </button>
                             @else
                                 <a href="{{ route('login') }}" class="mt-4 block bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded">
                                     Pesan Sekarang
@@ -88,6 +90,74 @@
             @endif
         </div>
     </div>
+
+    <!-- Modal Pop-Up -->
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+            <h2 class="text-2xl font-bold mb-6 text-center">Pesan Lapangan</h2>
+            <form action="{{ route('user.bookings.store') }}" method="POST">
+                @csrf
+                <!-- Field ID (Hidden) -->
+                <input type="hidden" id="field_id" name="field_id">
+    
+                <!-- Pilih Lapangan -->
+                <div class="mb-4">
+                    <label for="field_name" class="block text-sm font-medium text-gray-700">Lapangan</label>
+                    <input type="text" id="field_name" name="field_name" readonly
+                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100">
+                </div>
+    
+                <!-- Pilih Tanggal -->
+                <div class="mb-4">
+                    <label for="date" class="block text-sm font-medium text-gray-700">Pilih Tanggal</label>
+                    <input type="date" id="date" name="date" required
+                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
+    
+                <!-- Harga -->
+                <div class="mb-4">
+                    <label for="price" class="block text-sm font-medium text-gray-700">Harga per Jam</label>
+                    <input type="text" id="price" name="price" readonly
+                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100">
+                </div>
+    
+                <!-- Pilih Jadwal -->
+                <div class="mb-4">
+                    <label for="schedule_id" class="block text-sm font-medium text-gray-700">Pilih Jadwal</label>
+                    <select name="schedule_id" id="schedule_id" required
+                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2">
+                        <option value="">Pilih Jadwal</option>
+                    </select>
+                </div>
+    
+                <!-- Atas Nama -->
+                <div class="mb-4">
+                    <label for="booking_name" class="block text-sm font-medium text-gray-700">Atas Nama</label>
+                    <input type="text" name="booking_name" id="booking_name" required
+                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
+    
+                <!-- Nomor Telepon -->
+                <div class="mb-4">
+                    <label for="phone_number" class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+                    <input type="text" name="phone_number" id="phone_number" required
+                        class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2">
+                </div>
+    
+                <!-- Konfirmasi -->
+                <button type="submit"
+                    class="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition">
+                    Konfirmasi Pesanan
+                </button>
+            </form>
+    
+            <!-- Batal -->
+            <button onclick="closeModal()" class="mt-4 w-full text-red-500 font-medium py-2 px-4 rounded-lg">
+                Batal
+            </button>
+        </div>
+    </div>
+    
     
 
     <!-- Informasi Layanan -->
@@ -171,6 +241,47 @@
 
 
     <script>
+        document.getElementById('date').addEventListener('change', function() {
+            let date = this.value;
+            let field_id = document.getElementById('field_id').value;
+
+            console.log(date, field_id); // Tambahkan log untuk mengecek nilai
+
+            if (date && field_id) {
+                fetch(`/user/bookings/getSchedules?date=${date}&field_id=${field_id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let scheduleSelect = document.getElementById('schedule_id');
+                        scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+
+                        if (data.length > 0) {
+                            data.forEach(schedule => {
+                                let option = document.createElement('option');
+                                option.value = schedule.id;
+                                option.textContent = `${schedule.day} - ${schedule.start_time} - ${schedule.end_time}`;
+                                scheduleSelect.appendChild(option);
+                            });
+                        } else {
+                            let option = document.createElement('option');
+                            option.textContent = 'Tidak ada jadwal tersedia';
+                            scheduleSelect.appendChild(option);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching schedules:', error));
+            }
+        });
+
+        function openModal(fieldId, fieldName, fieldPrice) {
+        document.getElementById('field_id').value = fieldId;
+        document.getElementById('field_name').value = fieldName;
+        document.getElementById('price').value = `Rp ${fieldPrice.toLocaleString('id-ID')}`;
+        document.getElementById('bookingModal').classList.remove('hidden');
+    }
+
+    // Function untuk menutup modal
+    function closeModal() {
+        document.getElementById('bookingModal').classList.add('hidden');
+    }
         // Ganti dengan API key kamu
         const apiKey = 'e4eef249a39532aff45411e08ed49442'; // Ganti dengan API key yang kamu dapatkan
         const city = 'Jakarta'; // Ganti dengan kota yang diinginkan

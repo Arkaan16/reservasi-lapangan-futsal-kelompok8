@@ -1,95 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Booking</title>
-    @vite('resources/css/app.css')
+@extends('layouts.admin')
 
-    <!-- Tailwind -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+@section('title', 'Data Pembayaran | Futsal')
 
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
-        .font-family-karla { font-family: karla; }
-        .bg-sidebar { background: #3d68ff; }
-        .cta-btn { color: #3d68ff; }
-        .upgrade-btn { background: #1947ee; }
-        .upgrade-btn:hover { background: #0038fd; }
-        .active-nav-link { background: #1947ee; }
-        .nav-item:hover { background: #1947ee; }
-        .account-link:hover { background: #3d68ff; }
-    </style>
-</head>
-<body class="bg-gray-100 font-family-karla flex">
+@section('content')
+    <div class="flex">
+        @include('components.sidebar') <!-- Sidebar -->
 
-    <!-- Sidebar -->
-    @include('layouts.sidebar')
+        <div class="w-full flex-grow p-6">
+            <h1 class="text-3xl text-black pb-6">Data Pembayaran</h1>
 
-    <!-- Content Wrapper -->
-    <div class="bg-white shadow-sm rounded-lg p-6">
-        <h2 class="text-2xl mb-6">Daftar Pembayaran</h2>
+            <div class="w-full mt-6">
+                <div class="bg-white overflow-auto mx-auto rounded-lg" style="max-width: 1200px;">
+                    <!-- Tabel Pembayaran -->
+                    <table class="min-w-full bg-white mx-auto text-center">
+                        <thead class="bg-gray-800 text-white">
+                            <tr>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">ID Pemesanan</th>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Jumlah</th>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Metode Pembayaran</th>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Status</th>
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Bukti Pembayaran</th> <!-- Kolom Bukti Pembayaran -->
+                                <th class="py-3 px-4 uppercase font-semibold text-sm">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            @foreach($payments as $payment)
+                            <tr class="border-b">
+                                <td class="py-3 px-4">{{ $payment->booking_id }}</td>
+                                <td class="py-3 px-4">{{ number_format($payment->amount, 2, ',', '.') }}</td>
+                                <td class="py-3 px-4">{{ $payment->payment_method }}</td>
+                                <td class="py-3 px-4">
+                                    @if($payment->status == 'paid')
+                                        <span class="text-green-500 font-semibold">Paid</span>
+                                    @elseif($payment->status == 'pending')
+                                        <span class="text-yellow-500 font-semibold">Pending</span>
+                                    @else
+                                        <span class="text-red-500 font-semibold">Failed</span>
+                                    @endif
+                                </td>
+                                
+                                <!-- Menampilkan Bukti Pembayaran -->
+                                <td class="py-3 px-4">
+                                    @if($payment->payment_proof)
+                                        <a href="{{ asset('storage/' . $payment->payment_proof) }}" target="_blank" class="text-blue-500">
+                                           Lihat Bukti Pembayaran
+                                        </a>
+                                    @else
+                                        <span class="text-red-500">Tidak Ada Bukti</span>
+                                    @endif
+                                </td>
+                                
+                                <td class="py-3 px-4 flex justify-center space-x-2">
+                                    <!-- Tombol View -->
+                                    <a href="{{ route('admin.payments.show', $payment->id) }}" class="text-indigo-600 hover:text-indigo-900">
+                                        <i class="fas fa-eye mr-2"></i> View
+                                    </a>
 
-        {{-- <a href="{{ route('admin.payments.create', $booking->id) }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">Tambah Pembayaran</a>  --}}
-
-        <table class="w-full mt-6 table-auto">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2">No</th>
-                    <th class="px-4 py-2">Booking ID</th>
-                    <th class="px-4 py-2">Durasi Penyewaan</th> <!-- Kolom untuk Durasi Penyewaan -->
-                    <th class="px-4 py-2">Jumlah Pembayaran</th>
-                    <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2">Metode Pembayaran</th>
-                    <th class="px-4 py-2">Bukti Pembayaran</th>
-                    <th class="px-4 py-2">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($payments as $index => $payment)
-                    <tr>
-                        <td class="px-4 py-2">{{ $index + 1 }}</td>
-                        <td class="px-4 py-2">{{ $payment->booking_id }}</td>
-
-                        <!-- Menampilkan Durasi Penyewaan berdasarkan Jadwal -->
-                        <td class="px-4 py-2">
-                            @if($payment->booking->schedule)
-                                @php
-                                    $startTime = \Carbon\Carbon::parse($payment->booking->schedule->start_time);
-                                    $endTime = \Carbon\Carbon::parse($payment->booking->schedule->end_time);
-                                    $duration = $endTime->diffInHours($startTime); // Menghitung durasi dalam jam
-                                @endphp
-                                {{ $duration }} Jam
-                            @else
-                                Jadwal tidak tersedia
-                            @endif
-                        </td>
-
-                        <td class="px-4 py-2">{{ $payment->amount }}</td>
-                        <td class="px-4 py-2">{{ ucfirst($payment->status) }}</td>
-                        <td class="px-4 py-2">{{ $payment->payment_method }}</td>
-                        <td class="px-4 py-2">
-                            @if($payment->payment_proof)
-                                <a href="{{ asset('storage/' . $payment->payment_proof) }}" target="_blank">Lihat Bukti</a>
-                            @else
-                                Tidak ada bukti
-                            @endif
-                        </td>
-                        <td class="px-4 py-2">
-                            <a href="{{ route('admin.payments.edit', $payment->id) }}" class="text-blue-500">Edit</a>
-                            <form action="{{ route('admin.payments.destroy', $payment->id) }}" method="POST" class="inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                                    <a href="{{ route('admin.payments.edit', $payment->id) }}" class="text-green-600 hover:text-green-900">
+                                        <i class="fas fa-edit mr-2"></i> Edit
+                                    </a>
+                                    
+                                    <!-- Tombol Hapus dengan konfirmasi -->
+                                    <form action="{{ route('admin.payments.destroy', $payment->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data pembayaran ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900">
+                                            <i class="fas fa-trash-alt mr-2"></i> Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
-</body>
-</html>
+@endsection

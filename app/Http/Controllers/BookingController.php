@@ -14,7 +14,7 @@ class BookingController extends Controller
     public function index()
     {
         // Menampilkan semua booking milik user yang login
-        $bookings = Booking::where('user_id', Auth::id())->get();
+        $bookings = Booking::all();
         return view('admin.bookings.index', compact('bookings'));
     }
 
@@ -40,9 +40,9 @@ class BookingController extends Controller
 
         // Mendapatkan jadwal yang dipilih
         $schedule = Schedule::find($request->schedule_id);
-            if ($schedule->is_available == 0) {
-                return redirect()->back()->with('error', 'Jadwal sudah dipesan.');
-            }
+        if ($schedule->is_available == 0) {
+            return redirect()->back()->with('error', 'Jadwal sudah dipesan.');
+        }
 
         // Menyimpan booking dengan menambahkan tanggal yang dipilih
         $booking = Booking::create([
@@ -60,8 +60,15 @@ class BookingController extends Controller
             'is_available' => 0
         ]);
 
-        return redirect()->route('admin.bookings.index')->with('success', 'Booking berhasil dibuat!');
+        // Jika pengguna adalah admin, arahkan ke halaman admin
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.bookings.index')->with('success', 'Booking berhasil dibuat!');
+        }
+
+        // Jika pengguna adalah user biasa, arahkan ke halaman user
+        return redirect()->route('user.administration.index')->with('success', 'Booking berhasil dibuat!');
     }
+
 
 
     public function edit(Booking $booking)
@@ -150,8 +157,6 @@ class BookingController extends Controller
         // Konversi tanggal yang dipilih menjadi nama hari
         $day = \Carbon\Carbon::parse($validated['date'])->locale('id')->isoFormat('dddd'); // "Senin", "Selasa", dst.
         
-    // Cek log aplikasi untuk memastikan tanggal yang diterima
-        
         // Ambil jadwal berdasarkan lapangan, hari, dan status tersedia
         $schedules = Schedule::where('field_id', $validated['field_id'])
                             ->where('day', ucfirst($day))  // Mencocokkan nama hari (case sensitive)
@@ -161,5 +166,38 @@ class BookingController extends Controller
         return response()->json($schedules);
     }
 
+    public function indexBookingsUser()
+    {
+        // Ambil semua booking yang hanya dimiliki oleh user yang sedang login
+        $bookings = Booking::where('user_id', Auth::id())->get();
 
+        // Kirim data booking ke view
+        return view('user.administration.index', compact('bookings'));
     }
+
+    public function cancel($bookingId)
+    {
+        // Mencari booking berdasarkan ID
+        $booking = Booking::find($bookingId);
+
+        // Pastikan booking ditemukan dan user yang login adalah pemilik booking
+        if (!$booking || $booking->user_id !== auth()->id()) {
+            return redirect()->route('user.administration.index')->with('error', 'Booking tidak ditemukan atau Anda tidak memiliki izin untuk membatalkannya.');
+        }
+
+        // Mengubah status booking menjadi 'canceled'
+        $booking->update(['status' => 'canceled']);
+
+        // Mengembalikan jadwal menjadi tersedia
+        $schedule = Schedule::find($booking->schedule_id);
+        if ($schedule) {
+            $schedule->update(['is_available' => true]);
+        }
+
+        // Redirect ke halaman riwayat booking
+        return redirect()->route('user.administration.index')->with('success', 'Booking berhasil dibatalkan.');
+    }
+
+
+}
+
