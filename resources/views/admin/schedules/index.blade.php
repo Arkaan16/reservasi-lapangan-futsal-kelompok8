@@ -65,7 +65,7 @@
                                     <a href="{{ route('admin.schedules.show', $schedule->id) }}" class="text-indigo-600 hover:text-indigo-900">
                                         <i class="fas fa-eye mr-2"></i> View
                                     </a>
-                                    
+                                  
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('admin.schedules.edit', $schedule->id) }}" class="text-indigo-600 hover:text-indigo-900">
                                         <i class="fas fa-edit mr-2"></i> Edit

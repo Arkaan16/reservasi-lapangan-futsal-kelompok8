@@ -13,6 +13,9 @@ class Booking extends Model
         'user_id',
         'field_id',
         'schedule_id',
+        'start_time',
+        'end_time',
+        'total_price',
         'booking_name',
         'phone_number',
         'status'

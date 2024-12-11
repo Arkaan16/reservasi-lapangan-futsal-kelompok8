@@ -42,14 +42,20 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="end_time" class="block text-gray-700 text-sm font-bold mb-2">Jam Selesai:</label>
-                        <input type="time" name="end_time" id="end_time" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="duration" class="block text-gray-700 text-sm font-bold mb-2">Durasi (Jam):</label>
+                        <select name="duration" id="duration" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="1">1 Jam</option>
+                            <option value="2">2 Jam</option>
+                            <option value="3">3 Jam</option>
+                            <option value="4">4 Jam</option>
+                        </select>
                     </div>
 
-                    <div>
+                    <!-- Jam selesai otomatis dihitung berdasarkan durasi -->
+                    <div class="mb-4">
                         <label for="is_recurring">Jadwal Berulang:</label>
                         <input type="checkbox" name="is_recurring" id="is_recurring" value="1">
-                    </div>                    
+                    </div>
 
                     <div class="mb-4">
                         <label for="is_available" class="block text-gray-700 text-sm font-bold mb-2">Ketersediaan:</label>
@@ -64,4 +70,22 @@
             </form>
         </div>
     </div>
+
+    <script>
+        // Menambahkan event listener untuk menghitung jam selesai berdasarkan durasi
+        document.getElementById('duration').addEventListener('change', function() {
+            const startTime = document.getElementById('start_time').value;
+            const duration = this.value;
+            if (startTime && duration) {
+                const startHour = parseInt(startTime.split(':')[0]);
+                const startMinute = parseInt(startTime.split(':')[1]);
+                let endHour = startHour + parseInt(duration);
+                let endMinute = startMinute;
+
+                // Menentukan waktu selesai berdasarkan durasi
+                if (endHour < 10) endHour = '0' + endHour;
+                document.getElementById('end_time').value = endHour + ':' + (endMinute < 10 ? '0' + endMinute : endMinute);
+            }
+        });
+    </script>
 @endsection

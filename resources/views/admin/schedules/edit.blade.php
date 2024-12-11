@@ -15,6 +15,18 @@
                         @csrf
                         @method('PUT')
 
+                        <!-- Error Handling -->
+                        @if ($errors->any())
+                            <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                                <ul class="list-disc list-inside">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <!-- Lapangan -->
                         <div class="mb-4">
                             <label for="field_id" class="block text-sm font-medium text-gray-700">Lapangan</label>
                             <select name="field_id" id="field_id" class="form-select mt-1 block w-full rounded border-gray-300">
@@ -27,20 +39,37 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="day" class="block text-sm font-medium text-gray-700">Hari</label>
+                            <select name="day" id="day" class="form-select mt-1 block w-full rounded border-gray-300">
+                                <option value="Senin" {{ $schedule->day == 'Senin' ? 'selected' : '' }}>Senin</option>
+                                <option value="Selasa" {{ $schedule->day == 'Selasa' ? 'selected' : '' }}>Selasa</option>
+                                <option value="Rabu" {{ $schedule->day == 'Rabu' ? 'selected' : '' }}>Rabu</option>
+                                <option value="Kamis" {{ $schedule->day == 'Kamis' ? 'selected' : '' }}>Kamis</option>
+                                <option value="Jumat" {{ $schedule->day == 'Jumat' ? 'selected' : '' }}>Jumat</option>
+                                <option value="Sabtu" {{ $schedule->day == 'Sabtu' ? 'selected' : '' }}>Sabtu</option>
+                                <option value="Minggu" {{ $schedule->day == 'Minggu' ? 'selected' : '' }}>Minggu</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Tanggal -->
+                        <div class="mb-4">
                             <label for="date" class="block text-sm font-medium text-gray-700">Tanggal</label>
                             <input type="date" name="date" id="date" value="{{ old('date', $schedule->date) }}" class="form-input mt-1 block w-full rounded border-gray-300">
                         </div>
 
+                        <!-- Jam Mulai -->
                         <div class="mb-4">
                             <label for="start_time" class="block text-sm font-medium text-gray-700">Jam Mulai</label>
                             <input type="time" name="start_time" id="start_time" value="{{ old('start_time', \Carbon\Carbon::parse($schedule->start_time)->format('H:i')) }}" class="form-input mt-1 block w-full rounded border-gray-300">
                         </div>
 
+                        <!-- Jam Selesai -->
                         <div class="mb-4">
                             <label for="end_time" class="block text-sm font-medium text-gray-700">Jam Selesai</label>
                             <input type="time" name="end_time" id="end_time" value="{{ old('end_time', \Carbon\Carbon::parse($schedule->end_time)->format('H:i')) }}" class="form-input mt-1 block w-full rounded border-gray-300">
                         </div>
 
+                        <!-- Ketersediaan -->
                         <div class="mb-4">
                             <label for="is_available" class="block text-sm font-medium text-gray-700">Ketersediaan</label>
                             <select name="is_available" id="is_available" class="form-select mt-1 block w-full rounded border-gray-300">
@@ -49,6 +78,13 @@
                             </select>
                         </div>
 
+                        <!-- Pengulangan Jadwal -->
+                        <div class="mb-4">
+                            <label for="is_recurring" class="block text-sm font-medium text-gray-700">Ulangi Jadwal Mingguan</label>
+                            <input type="checkbox" name="is_recurring" id="is_recurring" value="1" {{ $schedule->is_recurring ? 'checked' : '' }} class="form-checkbox mt-1">
+                        </div>
+
+                        <!-- Tombol Submit -->
                         <div class="flex justify-end">
                             <button type="submit" class="inline-flex items-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
                                 <i class="fas fa-save mr-2"></i> Simpan Perubahan

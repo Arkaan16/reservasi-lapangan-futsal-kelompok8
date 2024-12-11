@@ -122,6 +122,9 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('bookings/{booking}/edit', [BookingController::class, 'edit'])->name('admin.bookings.edit');
     Route::put('bookings/{booking}', [BookingController::class, 'update'])->name('admin.bookings.update');
     Route::delete('bookings/{booking}', [BookingController::class, 'destroy'])->name('admin.bookings.destroy');
+    Route::get('bookings/calculatePrice', [BookingController::class, 'calculatePrice']);
+    Route::get('bookings/getFieldPrice', [BookingController::class, 'getFieldPrice']);
+    Route::get('bookings/getAvailableSchedules', [BookingController::class, 'getAvailableSchedules'])->name('admin.bookings.getAvailableSchedules');
     
     // Rute manual untuk users
     Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
