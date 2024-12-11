@@ -34,8 +34,11 @@
                                         <span class="text-green-500 font-semibold">Paid</span>
                                     @elseif($payment->status == 'pending')
                                         <span class="text-yellow-500 font-semibold">Pending</span>
+<<<<<<< HEAD
                                     @elseif($payment->status == 'checked')
                                         <span class="text-blue-500 font-semibold">Check</span>
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                                     @else
                                         <span class="text-red-500 font-semibold">Failed</span>
                                     @endif

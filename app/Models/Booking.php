@@ -15,8 +15,12 @@ class Booking extends Model
         'schedule_id',
         'booking_name',
         'phone_number',
+<<<<<<< HEAD
         'status',
         'expired_at'
+=======
+        'status'
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
     ];
 
     public function user()

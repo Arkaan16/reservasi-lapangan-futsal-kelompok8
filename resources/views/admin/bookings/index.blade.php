@@ -65,14 +65,22 @@
                                 </td>
                                 <td class="py-3 px-4 flex justify-center space-x-2">
                                     <!-- Tombol View -->
+<<<<<<< HEAD
                                     {{-- <a href="{{ route('admin.bookings.show', $booking->id) }}" class="text-indigo-600 hover:text-indigo-900">
+=======
+                                    <a href="{{ route('admin.bookings.show', $booking->id) }}" class="text-indigo-600 hover:text-indigo-900">
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                                         <i class="fas fa-eye mr-2"></i> View
                                     </a>
                                     
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('admin.bookings.edit', $booking->id) }}" class="text-indigo-600 hover:text-indigo-900">
                                         <i class="fas fa-edit mr-2"></i> Edit
+<<<<<<< HEAD
                                     </a> --}}
+=======
+                                    </a>
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                                     
                                     <!-- Tombol Hapus dengan konfirmasi -->
                                     <form action="{{ route('admin.bookings.destroy', $booking->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus booking ini?');">
@@ -83,11 +91,19 @@
                                         </button>
                                     </form>
 
+<<<<<<< HEAD
                                     {{-- @if($booking->status == 'confirmed') <!-- Pastikan status booking sudah confirmed -->
                                         <a href="{{ route('admin.payments.create', $booking->id) }}" class="text-green-600 hover:text-green-900">
                                             <i class="fas fa-credit-card mr-2"></i> Bayar
                                         </a>
                                     @endif --}}
+=======
+                                    @if($booking->status == 'confirmed') <!-- Pastikan status booking sudah confirmed -->
+                                        <a href="{{ route('admin.payments.create', $booking->id) }}" class="text-green-600 hover:text-green-900">
+                                            <i class="fas fa-credit-card mr-2"></i> Bayar
+                                        </a>
+                                    @endif
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                                 </td>
                             </tr>
                             @endforeach

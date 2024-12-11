@@ -17,7 +17,10 @@ return new class extends Migration
             $table->foreignId('field_id')->constrained('fields')->onDelete('cascade');
             $table->foreignId('schedule_id')->constrained('schedules')->onDelete('cascade');
             $table->enum('status', ['pending', 'confirmed', 'completed', 'canceled'])->default('pending');
+<<<<<<< HEAD
             $table->timestamp('expired_at')->nullable();
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
             $table->timestamps();
         });
     }

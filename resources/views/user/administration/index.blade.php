@@ -9,6 +9,7 @@
     <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Riwayat Booking</h1>
 
     <!-- Container Card Riwayat Booking -->
+<<<<<<< HEAD
     @if($bookings->isEmpty())
         <div class="text-center text-gray-600">
             <p>Belum ada riwayat booking yang tersedia.</p>
@@ -87,23 +88,84 @@
                 @if($booking->status == 'pending' && (!$booking->payment || $booking->payment->status == 'pending'))
                 <form action="{{ route('user.bookings.cancel', $booking->id) }}" method="POST" class="mt-4">
                     @csrf
+=======
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach($bookings as $booking)
+        <div class="bg-white rounded-lg shadow-md p-4">
+            <!-- Header Card -->
+            <div class="mb-2">
+                <h2 class="text-lg font-semibold text-gray-700">{{ $booking->field->name }}</h2>
+                <p class="text-sm text-gray-500">
+                    Tanggal Jadwal : {{ $booking->schedule->date }} <br>
+                    Jam Mulai & Jam Selesai : ({{\Carbon\Carbon::parse ($booking->schedule->start_time)->format('H:i') }} s/d {{ \Carbon\Carbon::parse($booking->schedule->end_time)->format('H:i') }})
+                </p>
+            </div>
+
+            <!-- Detail Booking -->
+            <div class="mb-4 space-y-2">
+                <p class="text-gray-600"><span class="font-medium">Atas Nama:</span> {{ $booking->booking_name }}</p>
+                <p class="text-gray-600"><span class="font-medium">No Telepon:</span> {{ $booking->phone_number }}</p>
+                <p class="text-gray-600"><span class="font-medium">Harga:</span> Rp{{ number_format($booking->field->price_per_hour, 0, ',', '.') }} / jam</p>
+                <p class="text-gray-600"><span class="font-medium">Status:</span> 
+                    @if($booking->payment && $booking->payment->status == 'paid')
+                        <span class="text-green-500 font-semibold">Sudah Dibayar</span>
+                    @else
+                        <span class="text-red-500 font-semibold">Belum Dibayar</span>
+                    @endif
+                </p>
+            </div>
+
+            <!-- Tombol Aksi Pembayaran -->
+            @if($booking->status == 'pending' && (!$booking->payment || $booking->payment->status != 'paid'))
+                <button class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg" onclick="openPaymentModal({{ $booking->id }})">
+                    Bayar Sekarang
+                </button>
+            @elseif($booking->status == 'canceled')
+                <button disabled class="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg cursor-not-allowed">
+                    Booking Dibatalkan
+                </button>
+            @elseif($booking->payment && $booking->payment->status == 'paid')
+                <button disabled class="w-full bg-gray-300 text-gray-500 py-2 px-4 rounded-lg cursor-not-allowed">
+                    Sudah Dibayar
+                </button>
+            @endif
+
+
+            <!-- Tombol Batalkan Pemesanan -->
+            @if($booking->status == 'pending' && (!$booking->payment || $booking->payment->status == 'pending'))
+                <form action="{{ route('user.bookings.cancel', $booking->id) }}" method="POST" class="mt-4">
+                    @csrf
+                    @method('POST') <!-- Pastikan metode POST digunakan -->
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                     <button type="submit" class="w-full bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-lg">
                         Batalkan Booking
                     </button>
                 </form>
+<<<<<<< HEAD
                 @endif
 
             </div>
             @endforeach
         </div>
     @endif
+=======
+            @endif
+
+        </div>
+        @endforeach
+    </div>
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
 </div>
 
 <!-- Modal Pilih Metode Pembayaran -->
 <div id="paymentModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center hidden">
     <div class="bg-white rounded-lg p-6 w-1/3">
         <h2 class="text-xl font-semibold mb-4">Pilih Metode Pembayaran</h2>
+<<<<<<< HEAD
         <form action="{{ route('user.payments.store', ':id') }}" method="POST" enctype="multipart/form-data" id="paymentForm">
+=======
+        <form action="{{ route('user.payments.store', $booking->id) }}" method="POST" enctype="multipart/form-data">
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
             @csrf
             <input type="hidden" name="booking_id" id="booking_id">
             <div class="mb-4">
@@ -131,6 +193,7 @@
     </div>
 </div>
 
+<<<<<<< HEAD
 
 <script>
     document.querySelectorAll('form').forEach(form => {
@@ -213,6 +276,14 @@
     document.getElementById('paymentModal').classList.remove('hidden');
 }
 
+=======
+<script>
+    // Fungsi untuk membuka modal
+    function openPaymentModal(bookingId) {
+        document.getElementById('booking_id').value = bookingId;
+        document.getElementById('paymentModal').classList.remove('hidden');
+    }
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
 
     // Fungsi untuk menutup modal
     function closePaymentModal() {
@@ -231,6 +302,7 @@
         });
     });
 </script>
+<<<<<<< HEAD
 
 <script>
     // Fungsi untuk update countdown
@@ -283,6 +355,8 @@
 
 </script>
 
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
 @include('components.footer')
 
 @endsection

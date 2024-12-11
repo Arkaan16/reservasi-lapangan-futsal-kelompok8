@@ -7,7 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'Landing Page')</title>
     <link rel="icon" href="/assets/img/logof.png" type="image/png">
+<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
     @vite('resources/css/app.css')
 </head>
 <body class="bg-gray-50">

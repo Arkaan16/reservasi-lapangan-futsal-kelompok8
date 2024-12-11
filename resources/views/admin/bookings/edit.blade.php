@@ -69,9 +69,18 @@
                 <!-- Pilihan Status -->
                 <div class="mb-4">
                     <label for="status" class="block text-sm font-medium text-gray-700">Status Pemesanan</label>
+<<<<<<< HEAD
                     <a href="{{ route('admin.payments.edit', $booking->id) }}" class="text-blue-500 hover:text-blue-700">
                         Cek Pembayaran
                     </a>
+=======
+                    <select name="status" id="status" class="mt-1 block w-full">
+                        <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="confirmed" {{ $booking->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                        <option value="completed" {{ $booking->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                        <option value="canceled" {{ $booking->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                    </select>
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                 </div>
 
                 <!-- Tombol Submit -->

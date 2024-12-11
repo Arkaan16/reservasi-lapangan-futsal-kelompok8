@@ -46,7 +46,10 @@
                             <option value="pending" {{ $payment->status == 'pending' ? 'selected' : '' }}>Menunggu</option>
                             <option value="paid" {{ $payment->status == 'paid' ? 'selected' : '' }}>Lunas</option>
                             <option value="failed" {{ $payment->status == 'failed' ? 'selected' : '' }}>Gagal</option>
+<<<<<<< HEAD
                             <option value="checked" {{ $payment->status == 'checked' ? 'selected' : '' }}>Mengecek Pembayarn</option>
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                         </select>
                     </div>
 

@@ -6,7 +6,10 @@ use App\Models\User;
 use App\Models\Field;
 use App\Models\Booking;
 use App\Models\Schedule;
+<<<<<<< HEAD
 use Carbon\Carbon;
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -45,8 +48,11 @@ class BookingController extends Controller
             return redirect()->back()->with('error', 'Jadwal sudah dipesan.');
         }
 
+<<<<<<< HEAD
         $expiredAt = Carbon::now()->addMinutes(2);
 
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
         // Menyimpan booking dengan menambahkan tanggal yang dipilih
         $booking = Booking::create([
             'user_id' => auth()->id(),
@@ -55,7 +61,10 @@ class BookingController extends Controller
             'booking_name' => $request->booking_name,
             'phone_number' => $request->phone_number,
             'status' => 'pending',
+<<<<<<< HEAD
             'expired_at' => $expiredAt,
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
         ]);
 
         // Memperbarui jadwal untuk menyimpan tanggal booking
@@ -73,6 +82,11 @@ class BookingController extends Controller
         return redirect()->route('user.administration.index')->with('success', 'Booking berhasil dibuat!');
     }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
     public function edit(Booking $booking)
     {
         // Pastikan hanya user terkait yang dapat mengedit atau admin
@@ -120,11 +134,15 @@ class BookingController extends Controller
             switch ($validated['status']) {
                 case 'pending':
                 case 'confirmed':
+<<<<<<< HEAD
                     $booking->update([
                         'status' => 'confirmed',
                         'expired_at' => null, // Hilangkan waktu expired
                     ]);
                     $schedule->update(['is_available' => false]); // Jadwal tetap tidak tersedia
+=======
+                    $schedule->update(['is_available' => false]); // Jadwal tidak tersedia
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
                     break;
                 case 'completed':
                 case 'canceled':
@@ -146,6 +164,7 @@ class BookingController extends Controller
             return redirect()->route('admin.bookings.index')->with('error', 'Anda tidak memiliki izin untuk menghapus booking ini.');
         }
 
+<<<<<<< HEAD
         // Mengembalikan status jadwal menjadi tersedia dan menghapus tanggalnya
         $schedule = Schedule::find($booking->schedule_id);
         if ($schedule) {
@@ -155,6 +174,8 @@ class BookingController extends Controller
             ]);
         }
 
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
         // Menghapus booking
         $booking->delete();
 
@@ -186,6 +207,7 @@ class BookingController extends Controller
         // Ambil semua booking yang hanya dimiliki oleh user yang sedang login
         $bookings = Booking::where('user_id', Auth::id())->get();
 
+<<<<<<< HEAD
         // Proses data booking
         foreach ($bookings as $booking) {
             // Cek status pembayaran terlebih dahulu
@@ -237,11 +259,16 @@ class BookingController extends Controller
         
         
 
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
         // Kirim data booking ke view
         return view('user.administration.index', compact('bookings'));
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
     public function cancel($bookingId)
     {
         // Mencari booking berdasarkan ID
@@ -255,6 +282,7 @@ class BookingController extends Controller
         // Mengubah status booking menjadi 'canceled'
         $booking->update(['status' => 'canceled']);
 
+<<<<<<< HEAD
         $schedule = Schedule::find($booking->schedule_id);
         if ($schedule) {
             // Set jadwal menjadi tersedia kembali dan menghapus tanggalnya
@@ -262,6 +290,12 @@ class BookingController extends Controller
                 'is_available' => true, // Menandakan jadwal tersedia
                 'date' => null // Menghapus tanggal booking pada jadwal
             ]);
+=======
+        // Mengembalikan jadwal menjadi tersedia
+        $schedule = Schedule::find($booking->schedule_id);
+        if ($schedule) {
+            $schedule->update(['is_available' => true]);
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
         }
 
         // Redirect ke halaman riwayat booking
@@ -269,6 +303,7 @@ class BookingController extends Controller
     }
 
 
+<<<<<<< HEAD
     public function scheduleDetails($scheduleId)
     {
         $schedule = Schedule::find($scheduleId);
@@ -302,5 +337,7 @@ class BookingController extends Controller
 
 
 
+=======
+>>>>>>> eb03d07a75b88133acd17c6dd524ae0493aa5f83
 }
 
