@@ -188,7 +188,7 @@
                     // Menampilkan SweetAlert jika pembayaran berhasil
                     Swal.fire({
                         title: 'Pembayaran Berhasil',
-                        text: 'Pembayaran Anda telah berhasil diproses.',
+                        text: 'Pembayaran Anda telah berhasil diproses.' ,
                         icon: 'success',
                         showConfirmButton: false,  // Menghilangkan tombol konfirmasi
                         timer: 3000, // Durasi tampilkan alert
