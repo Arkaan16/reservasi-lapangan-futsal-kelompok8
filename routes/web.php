@@ -69,11 +69,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Rute untuk membatalkan booking
     Route::post('user/bookings/cancel/{bookingId}', [BookingController::class, 'cancel'])->name('user.bookings.cancel');
 
+    Route::get('/user/bookings/scheduleDetails/{scheduleId}', [BookingController::class, 'scheduleDetails']);
+
     // Rute untuk bookings oleh user
     Route::prefix('user/bookings')->name('user.bookings.')->group(function () {
         Route::get('/create', [BookingController::class, 'create'])->name('create');
         Route::post('/store', [BookingController::class, 'store'])->name('store');
         Route::post('/cancel/{bookingId}', [BookingController::class, 'cancel'])->name('cancel');
+        Route::post('/cancel/expired/{bookingId}', [BookingController::class, 'cancelExpiredBooking'])->name('bookings.cancelExpired');
     });
 
     // Rute untuk melihat pembayaran user

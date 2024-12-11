@@ -92,8 +92,8 @@
     </div>
 
     <!-- Modal Pop-Up -->
-    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 overflow-y-auto max-h-screen">
             <h2 class="text-2xl font-bold mb-6 text-center">Pesan Lapangan</h2>
             <form action="{{ route('user.bookings.store') }}" method="POST">
                 @csrf
@@ -126,8 +126,14 @@
                     <label for="schedule_id" class="block text-sm font-medium text-gray-700">Pilih Jadwal</label>
                     <select name="schedule_id" id="schedule_id" required
                         class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2">
-                        <option value="">Pilih Jadwal</option>
+                    <option value="">Pilih Jadwal</option>
                     </select>
+                </div>
+    
+                <!-- Total Harga -->
+                <div class="mb-4">
+                    <label for="booking_name" class="block text-sm font-medium text-gray-700">Total Harga</label>
+                    <span id="total_price" class="mt-1 block w-full border border-gray-300 rounded-lg px-3 py-2">Rp 0</span>
                 </div>
     
                 <!-- Atas Nama -->
@@ -145,7 +151,7 @@
                 </div>
     
                 <!-- Konfirmasi -->
-                <button type="submit"
+                <button id="konfirmasiPesananBtn" type="submit"
                     class="w-full bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition">
                     Konfirmasi Pesanan
                 </button>
@@ -165,24 +171,36 @@
         <div class="container mx-auto text-center">
             <h2 class="text-3xl font-extrabold mb-8" id="layanan">Kenapa Pilih Kami?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <!-- Mudah & Cepat -->
                 <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 16l-4-4m0 0l4-4m-4 4h16M4 12h16m-6 4h6M10 8h6" />
+                    </svg>
                     <h3 class="text-2xl font-bold mb-2">Mudah & Cepat</h3>
                     <p class="text-lg text-gray-600">Proses reservasi lapangan futsal kami mudah dan cepat, hanya dengan beberapa klik.</p>
                 </div>
+    
+                <!-- Jaminan Lapangan -->
                 <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16V8a4 4 0 011.38-3.03m13.17-.59A4 4 0 0116 8v8a4 4 0 01-4 4m4-12H8m6 0h2M6 8v8a4 4 0 004 4m6-12v8" />
+                    </svg>
                     <h3 class="text-2xl font-bold mb-2">Jaminan Lapangan</h3>
                     <p class="text-lg text-gray-600">Kami menjamin lapangan yang dipesan tersedia sesuai dengan waktu yang dipilih.</p>
                 </div>
+    
+                <!-- Pembayaran Aman -->
                 <div class="p-10 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105">
-                    <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12 0 3.31 1.366 6.293 3.515 8.484l-.389 2.916 2.916-.389c2.191 2.149 5.174 3.515 8.484 3.515 6.627 0 12-5.373 12-12s-5.373-12-12-12zm1 19h-2v-2h2v2zm1.83-7.78l-.67.67c-.66.66-1.16 1.17-1.33 2.11-.07.39-.39.68-.79.68h-2c-.45 0-.82-.39-.74-.84.19-1.16.76-2.08 1.58-2.9l1-1c.39-.39.57-.97.47-1.54-.14-.67-.73-1.15-1.42-1.15-.77 0-1.39.63-1.39 1.39v.11c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.11c0-2.21 1.79-4 4-4 1.97 0 3.61 1.41 3.96 3.32.3 1.45-.11 2.91-1.12 3.91z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2-2m0 0l2 2m-2-2v6m0-6a9 9 0 11-6.707 14.364M15 9a9 9 0 110-18 9 9 0 016.707 2.636" />
+                    </svg>
                     <h3 class="text-2xl font-bold mb-2">Pembayaran Aman</h3>
                     <p class="text-lg text-gray-600">Kami menyediakan metode pembayaran yang aman dan dapat dipercaya.</p>
                 </div>
             </div>
         </div>
     </div>
+    
 
 
     <!-- Visit us section -->
@@ -241,47 +259,121 @@
 
 
     <script>
+              document.querySelector('#konfirmasiPesananBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // Mencegah form submit langsung
+    Swal.fire({
+        title: 'Konfirmasi Pesanan',
+        text: 'Apakah Anda yakin ingin melakukan pemesanan?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Pesan Sekarang!',
+        cancelButtonText: 'Batal',
+        customClass: {
+            confirmButton: 'bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded',
+            cancelButton: 'bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded'
+        }
+    }).then(result => {
+        if (result.isConfirmed) {
+            // Submit form jika user mengkonfirmasi
+            event.target.closest('form').submit();
+
+            Swal.fire({
+                title: 'Pesanan Berhasil!',
+                text: 'Pesanan Anda telah berhasil diproses.',
+                icon: 'success',
+                showConfirmButton: false, // Menghilangkan tombol konfirmasi
+                timer: 3000, // Durasi tampilan dalam milidetik
+                didOpen: () => {
+                    // Menambahkan animasi setelah alert muncul
+                    Swal.getPopup().classList.add('animate__animated', 'animate__fadeIn');
+                }
+            });
+        }
+    });
+});
+
         document.getElementById('date').addEventListener('change', function() {
-            let date = this.value;
-            let field_id = document.getElementById('field_id').value;
+    let date = this.value;
+    let field_id = document.getElementById('field_id').value;
 
-            console.log(date, field_id); // Tambahkan log untuk mengecek nilai
+    console.log(date, field_id); // Add log for debugging
 
-            if (date && field_id) {
-                fetch(`/user/bookings/getSchedules?date=${date}&field_id=${field_id}`)
+    if (date && field_id) {
+        fetch(`/user/bookings/getSchedules?date=${date}&field_id=${field_id}`)
+            .then(response => response.json())
+            .then(data => {
+                let scheduleSelect = document.getElementById('schedule_id');
+                scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+
+                if (data.length > 0) {
+                    data.forEach(schedule => {
+                        // Format the time to be in "09:00 - 10:00" format
+                        let formattedTime = schedule.start_time.substring(0, 5) + ' - ' + schedule.end_time.substring(0, 5);
+                        
+                        // Create option element with formatted schedule
+                        let option = document.createElement('option');
+                        option.value = schedule.id;
+                        option.textContent = `${schedule.day} : ${formattedTime}`;
+                        scheduleSelect.appendChild(option);
+                    });
+                } else {
+                    let option = document.createElement('option');
+                    option.textContent = 'Tidak ada jadwal tersedia';
+                    scheduleSelect.appendChild(option);
+                }
+            })
+            .catch(error => console.error('Error fetching schedules:', error));
+    }
+});
+
+
+        document.getElementById('schedule_id').addEventListener('change', function() {
+            let scheduleId = this.value;
+            let pricePerHour = parseInt(document.getElementById('price').value.replace('Rp ', '').replace('.', '').replace(',','')); // Remove any formatting
+
+            if (scheduleId && pricePerHour) {
+                fetch(`/user/bookings/scheduleDetails/${scheduleId}`)
                     .then(response => response.json())
-                    .then(data => {
-                        let scheduleSelect = document.getElementById('schedule_id');
-                        scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+                    .then(schedule => {
+                        let startTime = schedule.start_time;
+                        let endTime = schedule.end_time;
 
-                        if (data.length > 0) {
-                            data.forEach(schedule => {
-                                let option = document.createElement('option');
-                                option.value = schedule.id;
-                                option.textContent = `${schedule.day} - ${schedule.start_time} - ${schedule.end_time}`;
-                                scheduleSelect.appendChild(option);
-                            });
-                        } else {
-                            let option = document.createElement('option');
-                            option.textContent = 'Tidak ada jadwal tersedia';
-                            scheduleSelect.appendChild(option);
-                        }
+                        // Calculate duration (in hours)
+                        let duration = calculateDuration(startTime, endTime);
+                        let totalPrice = duration * pricePerHour;
+
+                        // Display total price with proper formatting
+                        document.getElementById('total_price').textContent = `Rp ${totalPrice.toLocaleString('id-ID')}`;
                     })
-                    .catch(error => console.error('Error fetching schedules:', error));
+                    .catch(error => console.error('Error fetching schedule details:', error));
             }
         });
 
-        function openModal(fieldId, fieldName, fieldPrice) {
-        document.getElementById('field_id').value = fieldId;
-        document.getElementById('field_name').value = fieldName;
-        document.getElementById('price').value = `Rp ${fieldPrice.toLocaleString('id-ID')}`;
-        document.getElementById('bookingModal').classList.remove('hidden');
-    }
+        function calculateDuration(startTime, endTime) {
+            let start = new Date('1970-01-01T' + startTime + 'Z');
+            let end = new Date('1970-01-01T' + endTime + 'Z');
+            let diff = (end - start) / 1000 / 60 / 60; // Convert milliseconds to hours
+            return Math.ceil(diff); // Round up to the nearest hour
+        }
 
-    // Function untuk menutup modal
-    function closeModal() {
-        document.getElementById('bookingModal').classList.add('hidden');
-    }
+
+        function openModal(fieldId, fieldName, fieldPrice) {
+            document.getElementById('field_id').value = fieldId;
+            document.getElementById('field_name').value = fieldName;
+            
+            // Menghilangkan .00 pada harga dengan membulatkan harga jika perlu
+            let formattedPrice = parseFloat(fieldPrice).toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            
+            document.getElementById('price').value = `Rp ${formattedPrice}`;
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+
+        // Function untuk menutup modal
+        function closeModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+        }
+
         // Ganti dengan API key kamu
         const apiKey = 'e4eef249a39532aff45411e08ed49442'; // Ganti dengan API key yang kamu dapatkan
         const city = 'Jakarta'; // Ganti dengan kota yang diinginkan

@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('schedules:generate')->weekly(); // Jalankan setiap minggu
+        $schedule->command('bookings:cancel-expired')->everyMinute();
     }
     
 }

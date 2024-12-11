@@ -61,7 +61,7 @@ class PaymentController extends Controller
         $payment = Payment::create([
             'booking_id' => $booking->id,
             'amount' => $totalPrice,
-            'status' => 'pending', // Status awal adalah pending
+            'status' => 'checked', // Status awal adalah pending
             'payment_method' => $request->payment_method,
             'payment_proof' => $paymentProofPath,
         ]);
@@ -110,19 +110,22 @@ class PaymentController extends Controller
 
         // Validasi status pembayaran
         $request->validate([
-            'status' => 'required|in:pending,paid,failed',
+            'status' => 'required|in:pending,paid,failed,checked',
         ]);
 
-        // Jika status pembayaran diubah menjadi 'paid', kita update statusnya menjadi 'paid'
+        // Update status pembayaran
+        $payment->update([
+            'status' => $request->status,
+        ]);
+
+        // Ambil booking terkait
+        $booking = $payment->booking;
+
+        // Update status booking berdasarkan status pembayaran
         if ($request->status === 'paid') {
-            $payment->update([
-                'status' => 'paid',
-            ]);
-        } else {
-            // Jika status lainnya, tetapkan status sebelumnya
-            $payment->update([
-                'status' => $request->status,
-            ]);
+            $booking->update(['status' => 'confirmed']); // Jika pembayaran berhasil, status booking menjadi 'confirmed'
+        } elseif ($request->status === 'failed') {
+            $booking->update(['status' => 'canceled']); // Jika pembayaran gagal, status booking menjadi 'failed'
         }
 
         return redirect()->route('admin.payments.index')->with('success', 'Status pembayaran berhasil diperbarui!');
