@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('field_id')->constrained('fields')->onDelete('cascade');
-            $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
             $table->boolean('is_available')->default(true); // Status ketersediaan
