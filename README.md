@@ -103,7 +103,6 @@ Setelah melakukan reservasi, pengguna dapat melakukan pembayaran melalui metode 
 - **Backend:** Laravel 10
 - **Frontend:** Tailwind CSS, Blade
 - **Database:** MySQL
-- **Autentikasi:** Laravel Breeze
 - **Queue:** Laravel Queues untuk pemrosesan background
 
 ## Kontribusi
