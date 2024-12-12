@@ -237,13 +237,13 @@
     function updateCountdown(bookingId, expiredAt, paymentStatus, bookingStatus) {
         const countdownElement = document.getElementById('countdown_' + bookingId);
         if (bookingStatus === 'canceled') {
-        countdownElement.textContent = "Booking Dibatalkan";
+        countdownElement.textContent = "Dibatalkan";
         return;
         }
 
         // Jika status adalah 'paid' atau 'checked', set countdown ke "-"
         if (paymentStatus === 'paid') {
-            countdownElement.textContent = "Sudah Dibayar";
+            countdownElement.textContent = "-";
             return;
         } else if (paymentStatus === 'checked') {
             countdownElement.textContent = "-";

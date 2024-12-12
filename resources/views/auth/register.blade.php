@@ -22,7 +22,7 @@
             <!-- Logo -->
             <div class="text-center">
                 <img src="/assets/img/logof.png" alt="Futsal Logo" class="w-20 mx-auto mb-4">
-                <h1 class="text-2xl font-bold text-gray-800">Create Your Account</h1>
+                <h1 class="text-2xl font-bold text-gray-800">Membuat Akun</h1>
             </div>
 
             <!-- Form -->
@@ -31,7 +31,7 @@
 
                 <!-- Name -->
                 <div class="space-y-2">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
                     <input id="name" name="name" type="text" value="{{ old('name') }}" required autocomplete="name" class="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <!-- Error message for name -->
                     @if($errors->has('name'))
@@ -41,7 +41,7 @@
 
                 <!-- Email -->
                 <div class="space-y-2 mt-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <input id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email" class="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <!-- Error message for email -->
                     @if($errors->has('email'))
@@ -61,7 +61,7 @@
 
                 <!-- Confirm Password -->
                 <div class="space-y-2 mt-4">
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
                     <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password" class="block w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <!-- Error message for password confirmation -->
                     @if($errors->has('password_confirmation'))
@@ -77,7 +77,7 @@
 
             <!-- Login Link -->
             <p class="text-center text-sm text-gray-600 mt-4">
-                Already have an account? 
+                Sudah mempunyai akun? 
                 <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login</a>
             </p>
         </div>

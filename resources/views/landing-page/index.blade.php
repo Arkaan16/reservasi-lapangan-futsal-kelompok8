@@ -259,6 +259,13 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today); // Menetapkan batas minimum tanggal
+    });
+
+
               document.querySelector('#konfirmasiPesananBtn').addEventListener('click', function(event) {
     event.preventDefault(); // Mencegah form submit langsung
     Swal.fire({
